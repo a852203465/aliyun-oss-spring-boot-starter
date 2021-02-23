@@ -38,7 +38,9 @@ public class ImageProcessingConstant {
 
     public static final String I = "i";
 
+    public static final String F = "f";
 
+    public static final String AR = "ar";
 
 
 }

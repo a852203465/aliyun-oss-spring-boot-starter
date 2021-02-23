@@ -1,6 +1,6 @@
 package cn.darkjrong.oss.api.impl;
 
-import cn.darkjrong.oss.api.FileOperationsApi;
+import cn.darkjrong.oss.api.PresignedUrlApi;
 import cn.darkjrong.oss.callback.ProgressCallBack;
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
@@ -14,7 +14,6 @@ import com.aliyun.oss.event.ProgressListener;
 import com.aliyun.oss.model.GetObjectRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.util.Date;
@@ -31,14 +30,14 @@ public class BaseApiImpl {
 
     private OSS ossClient;
 
-    private FileOperationsApi fileOperationsApi;
+    private PresignedUrlApi presignedUrlApi;
 
     public void setOssClient(OSS ossClient) {
         this.ossClient = ossClient;
     }
 
-    public void setFileOperationsApi(FileOperationsApi fileOperationsApi) {
-        this.fileOperationsApi = fileOperationsApi;
+    public void setPresignedUrlApi(PresignedUrlApi presignedUrlApi) {
+        this.presignedUrlApi = presignedUrlApi;
     }
 
     protected OSS getOssClient() {
@@ -164,7 +163,7 @@ public class BaseApiImpl {
      * @return 图片URL
      */
     protected String processing(String bucketName, String objectName, String style, Long expirationTime) {
-        return fileOperationsApi.getUrl(bucketName, objectName, expirationTime, style);
+        return presignedUrlApi.getUrl(bucketName, objectName, expirationTime, style);
     }
 
 

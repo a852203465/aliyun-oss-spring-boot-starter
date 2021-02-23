@@ -3,6 +3,7 @@ package cn.darkjrong.oss.api;
 import cn.darkjrong.oss.api.impl.BucketApiImpl;
 import cn.darkjrong.oss.api.impl.FileOperationsApiImpl;
 import cn.darkjrong.oss.api.impl.ImageProcessingApiImpl;
+import cn.darkjrong.oss.api.impl.PresignedUrlApiImpl;
 import cn.darkjrong.oss.common.enums.CompressedFormatEnum;
 import cn.darkjrong.oss.common.enums.ZoomModeEnum;
 import cn.darkjrong.oss.common.pojo.dto.CropDTO;
@@ -24,16 +25,15 @@ public class ImageProcessingApiTest extends BaseApiTest {
 
     static {
 
-        FileOperationsApiImpl fileOperationsApi = new FileOperationsApiImpl();
+        PresignedUrlApiImpl presignedUrlApi = new PresignedUrlApiImpl();
+        presignedUrlApi.setAliyunOSSProperties(aliyunOSSProperties);
+        presignedUrlApi.setOssClient(ossClient);
 
         BucketApiImpl bucketApi = new BucketApiImpl();
         bucketApi.setOssClient(ossClient);
-        fileOperationsApi.setAliyunOSSProperties(aliyunOSSProperties);
-        fileOperationsApi.setBucketApi(bucketApi);
-        fileOperationsApi.setOssClient(ossClient);
-        fileOperationsApi.setOssClient(ossClient);
+
+        imageProcessingApi.setPresignedUrlApi(presignedUrlApi);
         imageProcessingApi.setOssClient(ossClient);
-        imageProcessingApi.setFileOperationsApi(fileOperationsApi);
     }
 
     @Test

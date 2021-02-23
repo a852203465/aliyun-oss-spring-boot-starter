@@ -35,11 +35,19 @@ public class StyleBuilder {
      * 初始化
      * @return 返回当前对象
      */
-    public StyleBuilder init(){
+    public StyleBuilder image(){
         buffer.append("image");
         return this;
     }
 
+    /**
+     * 初始化
+     * @return 返回当前对象
+     */
+    public StyleBuilder video(){
+        buffer.append("video");
+        return this;
+    }
 
     /**
      * 指定缩放模式
@@ -64,6 +72,20 @@ public class StyleBuilder {
     public StyleBuilder processMode(ImageProcessingEnum imageProcessingEnum) {
         if (ObjectUtil.isNotNull(imageProcessingEnum)) {
             buffer.append(imageProcessingEnum.getValue()).append(StrUtil.COMMA);
+        }
+
+        return this;
+    }
+
+    /**
+     * 指定处理模式
+     *
+     * @param  videoProcessingEnum 处理模式
+     * @return 返回当前对象
+     */
+    public StyleBuilder processMode(VideoProcessingEnum videoProcessingEnum) {
+        if (ObjectUtil.isNotNull(videoProcessingEnum)) {
+            buffer.append(videoProcessingEnum.getValue()).append(StrUtil.COMMA);
         }
 
         return this;
@@ -477,6 +499,57 @@ public class StyleBuilder {
         buffer.append(value).append(StrUtil.COMMA);
         return this;
     }
+
+    /**
+     * 指定截图时间
+     *
+     * @param time	截图时间
+     * @return 返回当前对象
+     */
+    public StyleBuilder time(Long time) {
+        buffer.append(joint(ImageProcessingConstant.T, time));
+        return this;
+    }
+
+    /**
+     * 指定截图模式
+     *
+     * @param mode	截图模式
+     * @return 返回当前对象
+     */
+    public StyleBuilder mode(SnapshotMode mode) {
+        if (ObjectUtil.isNotNull(mode)) {
+            buffer.append(joint(ImageProcessingConstant.M, mode.name()));
+        }
+        return this;
+    }
+
+    /**
+     * 指定图片的格式
+     *
+     * @param formatEnum	图片的格式
+     * @return 返回当前对象
+     */
+    public StyleBuilder snapshotFormat(ImageFormatEnum formatEnum) {
+        if (ObjectUtil.isNotNull(formatEnum)) {
+            buffer.append(joint(ImageProcessingConstant.F, formatEnum.name().toLowerCase()));
+        }
+        return this;
+    }
+
+    /**
+     * 指定旋转图片
+     *
+     * @param rotateEnum	旋转图片
+     * @return 返回当前对象
+     */
+    public StyleBuilder rotate(RotateEnum rotateEnum) {
+        if (ObjectUtil.isNotNull(rotateEnum)) {
+            buffer.append(joint(ImageProcessingConstant.AR, rotateEnum.name().toLowerCase()));
+        }
+        return this;
+    }
+
 
 
 

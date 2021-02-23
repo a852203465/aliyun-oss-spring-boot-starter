@@ -3,7 +3,6 @@ package cn.darkjrong.oss.api;
 import cn.darkjrong.oss.callback.ProgressCallBack;
 import cn.darkjrong.oss.common.exception.AliyunOSSClientException;
 import cn.darkjrong.oss.common.pojo.vo.FileInfoVO;
-import com.aliyun.oss.HttpMethod;
 import com.aliyun.oss.model.*;
 
 import java.io.File;
@@ -424,41 +423,6 @@ public interface FileOperationsApi {
      */
     byte[] speedLimitDownloadFile(String bucketName, String objectName) throws AliyunOSSClientException;
 
-    /**
-     * 获得url链接
-     * @param objectName 对象名称
-     * @param bucketName 存储空间
-     * @return url链接
-     */
-    String getUrl(String bucketName, String objectName);
-
-    /**
-     * 获得url链接
-     * @param objectName 对象名称
-     * @param bucketName 存储空间
-     * @param expirationTime URL链接有效时间 单位毫秒
-     * @return url链接
-     */
-    String getUrl(String bucketName, String objectName, Long expirationTime);
-
-    /**
-     * 获得url链接
-     * @param objectName 对象名称
-     * @param bucketName 存储空间
-     * @param style 样式  仅针对图片
-     * @return url链接
-     */
-    String getUrl(String bucketName, String objectName, String style);
-
-    /**
-     * 获得url链接
-     * @param objectName 对象名称
-     * @param bucketName 存储空间
-     * @param style 样式  仅针对图片
-     * @param expirationTime URL链接有效时间 单位毫秒
-     * @return url链接
-     */
-    String getUrl(String bucketName, String objectName, Long expirationTime, String style);
 
 
 

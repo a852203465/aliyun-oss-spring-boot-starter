@@ -9,7 +9,6 @@ import cn.darkjrong.oss.common.exception.AliyunOSSClientException;
 import cn.darkjrong.oss.common.pojo.vo.FileInfoVO;
 import cn.darkjrong.spring.boot.autoconfigure.AliyunOSSProperties;
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.lang.Assert;
@@ -17,12 +16,10 @@ import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.aliyun.oss.HttpMethod;
 import com.aliyun.oss.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 import java.io.*;
 import java.util.*;
@@ -38,14 +35,9 @@ public class FileOperationsApiImpl extends BaseApiImpl implements FileOperations
     private static final Logger logger = LoggerFactory.getLogger(FileOperationsApiImpl.class);
 
     private BucketApi bucketApi;
-    private AliyunOSSProperties aliyunOSSProperties;
 
     public void setBucketApi(BucketApi bucketApi) {
         this.bucketApi = bucketApi;
-    }
-
-    public void setAliyunOSSProperties(AliyunOSSProperties aliyunOSSProperties) {
-        this.aliyunOSSProperties = aliyunOSSProperties;
     }
 
     @Override
@@ -731,54 +723,6 @@ public class FileOperationsApiImpl extends BaseApiImpl implements FileOperations
     @Override
     public byte[] speedLimitDownloadFile(String bucketName, String objectName) throws AliyunOSSClientException {
         return this.speedLimitDownloadFile(bucketName, objectName, FileConstant.LIMIT_SPEED);
-    }
-
-    @Override
-    public String getUrl(String bucketName, String objectName) {
-
-        return getUrl(bucketName, objectName, FileConstant.EXPIRATION_TIME, null);
-    }
-
-    @Override
-    public String getUrl(String bucketName, String objectName, Long expirationTime) {
-
-        return this.getUrl(bucketName, objectName, expirationTime, null);
-    }
-
-    @Override
-    public String getUrl(String bucketName, String objectName, String style) {
-
-        return getUrl(bucketName, objectName, FileConstant.EXPIRATION_TIME, style);
-    }
-
-    @Override
-    public String getUrl(String bucketName, String objectName, Long expirationTime, String style) {
-
-        if (Validator.isNull(expirationTime)) {
-            expirationTime = FileConstant.EXPIRATION_TIME;
-        }
-
-        Date expiration = new Date(DateUtil.current() + expirationTime);
-
-        GeneratePresignedUrlRequest req = new GeneratePresignedUrlRequest(bucketName, objectName, HttpMethod.GET);
-
-        if (StrUtil.isNotBlank(style)) {
-            req.setProcess(style);
-        }
-
-        req.setExpiration(expiration);
-
-        try {
-            String signedUrl = getOssClient().generatePresignedUrl(req).toString();
-            if (aliyunOSSProperties.getOpenIntranet()) {
-                signedUrl = StringUtils.replace(signedUrl, aliyunOSSProperties.getIntranet(), aliyunOSSProperties.getEndpoint());
-            }
-            return signedUrl;
-        }catch (Exception e){
-            logger.error("getUrl {}", e.getMessage());
-        }
-
-        return null;
     }
 
 

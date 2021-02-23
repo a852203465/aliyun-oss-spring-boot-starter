@@ -2,6 +2,7 @@ package cn.darkjrong.oss.api;
 
 import cn.darkjrong.oss.api.impl.BucketApiImpl;
 import cn.darkjrong.oss.api.impl.FileOperationsApiImpl;
+import cn.darkjrong.oss.api.impl.PresignedUrlApiImpl;
 import cn.darkjrong.oss.callback.ProgressCallBack;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateUtil;
@@ -28,11 +29,16 @@ public class FileOperationsApiTest extends BaseApiTest {
 
     static {
 
+        PresignedUrlApiImpl presignedUrlApi = new PresignedUrlApiImpl();
+        presignedUrlApi.setAliyunOSSProperties(aliyunOSSProperties);
+        presignedUrlApi.setOssClient(ossClient);
+
         BucketApiImpl bucketApi = new BucketApiImpl();
         bucketApi.setOssClient(ossClient);
-        fileOperationsApi.setAliyunOSSProperties(aliyunOSSProperties);
         fileOperationsApi.setBucketApi(bucketApi);
         fileOperationsApi.setOssClient(ossClient);
+        fileOperationsApi.setPresignedUrlApi(presignedUrlApi);
+
     }
 
     @Test

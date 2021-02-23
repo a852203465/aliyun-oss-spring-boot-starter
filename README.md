@@ -54,6 +54,10 @@
     @Autowired
     private ImageProcessingApi imageProcessingApi;
 
+    // 签名URL API
+    @Autowired
+    private PresignedUrlApi presignedUrlApi;
+
 ```
 
 5. 进度回调
