@@ -31,7 +31,7 @@ import java.io.File;
  * @author Rong.Jia
  * @date 2021/02/22 19:25
  */
-public interface ImageProcessingApi {
+public interface ImageApi {
 
     /**
      * 图片缩放

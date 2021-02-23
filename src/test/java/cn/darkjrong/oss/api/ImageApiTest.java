@@ -1,8 +1,7 @@
 package cn.darkjrong.oss.api;
 
 import cn.darkjrong.oss.api.impl.BucketApiImpl;
-import cn.darkjrong.oss.api.impl.FileOperationsApiImpl;
-import cn.darkjrong.oss.api.impl.ImageProcessingApiImpl;
+import cn.darkjrong.oss.api.impl.ImageApiImpl;
 import cn.darkjrong.oss.api.impl.PresignedUrlApiImpl;
 import cn.darkjrong.oss.common.enums.CompressedFormatEnum;
 import cn.darkjrong.oss.common.enums.ZoomModeEnum;
@@ -19,9 +18,9 @@ import java.io.File;
  * @author Rong.Jia
  * @date 2021/02/22 20:39
  */
-public class ImageProcessingApiTest extends BaseApiTest {
+public class ImageApiTest extends BaseApiTest {
 
-    private static ImageProcessingApiImpl imageProcessingApi = new ImageProcessingApiImpl();
+    private static ImageApiImpl imageProcessingApi = new ImageApiImpl();
 
     static {
 

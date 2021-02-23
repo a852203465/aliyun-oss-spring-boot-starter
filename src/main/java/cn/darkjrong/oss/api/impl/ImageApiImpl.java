@@ -1,6 +1,6 @@
 package cn.darkjrong.oss.api.impl;
 
-import cn.darkjrong.oss.api.ImageProcessingApi;
+import cn.darkjrong.oss.api.ImageApi;
 import cn.darkjrong.oss.common.builder.StyleBuilder;
 import cn.darkjrong.oss.common.constants.FileConstant;
 import cn.darkjrong.oss.common.enums.CompressedFormatEnum;
@@ -29,9 +29,9 @@ import java.io.File;
  * @date 2021/02/22 19:26
  */
 @Component
-public class ImageProcessingApiImpl extends BaseApiImpl implements ImageProcessingApi {
+public class ImageApiImpl extends BaseApiImpl implements ImageApi {
 
-    private static final Logger logger = LoggerFactory.getLogger(ImageProcessingApiImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(ImageApiImpl.class);
 
     @Override
     public boolean resize(String bucketName, String objectName, ResizeDTO resizeDTO, File desFile) {

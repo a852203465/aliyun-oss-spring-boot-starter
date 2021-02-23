@@ -52,11 +52,16 @@
 
     // 图片处理API
     @Autowired
-    private ImageProcessingApi imageProcessingApi;
+    private ImageApi imageApi;
 
     // 签名URL API
     @Autowired
     private PresignedUrlApi presignedUrlApi;
+
+    // 视频处理API
+    @Autowired
+    private VideoApi videoApi
+
 
 ```
 
