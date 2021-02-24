@@ -5,6 +5,7 @@ import cn.darkjrong.oss.callback.ProgressCallBack;
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.aliyun.oss.OSS;
@@ -12,6 +13,7 @@ import com.aliyun.oss.event.ProgressEvent;
 import com.aliyun.oss.event.ProgressEventType;
 import com.aliyun.oss.event.ProgressListener;
 import com.aliyun.oss.model.GetObjectRequest;
+import com.aliyun.oss.model.OSSObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -164,6 +166,28 @@ public class BaseApiImpl {
      */
     protected String processing(String bucketName, String objectName, String style, Long expirationTime) {
         return presignedUrlApi.getUrl(bucketName, objectName, expirationTime, style);
+    }
+
+    /**
+     * 图片处理
+     * @param objectName 对象名称
+     * @param bucketName 存储空间
+     * @param style 样式
+     * @return 文件字节数组
+     */
+    protected byte[] processing(String bucketName, String objectName, String style) {
+
+        GetObjectRequest request = new GetObjectRequest(bucketName, objectName);
+        request.setProcess(style);
+
+        try {
+            OSSObject ossObject = getOssClient().getObject(request);
+            return IoUtil.readBytes(ossObject.getObjectContent());
+        }catch (Exception e) {
+            logger.error("processing {}", e.getMessage());
+        }
+
+        return null;
     }
 
 

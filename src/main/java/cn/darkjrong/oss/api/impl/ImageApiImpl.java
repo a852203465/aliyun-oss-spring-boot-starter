@@ -568,6 +568,210 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
         return this.contrast(bucketName, objectName, value, FileConstant.EXPIRATION_TIME);
     }
 
+    @Override
+    public byte[] resize(ResizeDTO resizeDTO, String bucketName, String objectName) {
 
+        String style = StyleBuilder.custom().image()
+                .processMode(ImageProcessingEnum.RESIZE)
+                .zoomMode(resizeDTO.getZoomModeEnum())
+                .width(resizeDTO.getWidth())
+                .height(resizeDTO.getHeight())
+                .longest(resizeDTO.getLongest())
+                .shortest(resizeDTO.getShortest())
+                .limit(resizeDTO.getLimit())
+                .color(resizeDTO.getColor())
+                .build();
+
+        if (ZoomModeEnum.PAD == resizeDTO.getZoomModeEnum()) {
+            style = StyleBuilder.custom().other(style, StyleBuilder.custom().color(resizeDTO.getColor()).build()).build();
+        }
+
+        return super.processing(bucketName, objectName, style);
+    }
+
+    @Override
+    public byte[] compression(CompressedFormatEnum compressedFormatEnum, String bucketName, String objectName) {
+
+        String style = StyleBuilder.custom().image().processMode(ImageProcessingEnum.FORMAT).compression(compressedFormatEnum).build();
+
+        return super.processing(bucketName, objectName, style);
+    }
+
+    @Override
+    public byte[] watermark(WatermarkDTO watermarkDTO, String bucketName, String objectName) {
+
+        String style = StyleBuilder.custom().image()
+                .processMode(ImageProcessingEnum.WATERMARK)
+                .transparency(watermarkDTO.getTransparency())
+                .location(watermarkDTO.getLocation())
+                .horizontalMargin(watermarkDTO.getHorizontalMargin())
+                .verticalMargin(watermarkDTO.getVerticalMargin())
+                .voffset(watermarkDTO.getVoffset())
+                .image(watermarkDTO.getImage())
+                .proportion(watermarkDTO.getProportion())
+                .text(watermarkDTO.getText())
+                .type(watermarkDTO.getType())
+                .size(watermarkDTO.getSize())
+                .shadow(watermarkDTO.getShadow())
+                .rotate(watermarkDTO.getRotate())
+                .fill(watermarkDTO.getFill())
+                .order(watermarkDTO.getOrder())
+                .align(watermarkDTO.getAlign())
+                .interval(watermarkDTO.getInterval())
+                .color(watermarkDTO.getColor())
+                .build();
+
+        return super.processing(bucketName, objectName, style);
+    }
+
+    @Override
+    public byte[] crop(CropDTO cropDTO, String bucketName, String objectName) {
+
+        String style = StyleBuilder.custom().image()
+                .processMode(ImageProcessingEnum.CROP)
+                .width(cropDTO.getWidth())
+                .height(cropDTO.getHeight())
+                .x(cropDTO.getX())
+                .y(cropDTO.getY())
+                .origin(cropDTO.getOrigin())
+                .build();
+
+        return super.processing(bucketName, objectName, style);
+    }
+
+    @Override
+    public byte[] quality(QualityDTO qualityDTO, String bucketName, String objectName) {
+
+        String style = StyleBuilder.custom().image()
+                .processMode(ImageProcessingEnum.QUALITY)
+                .relative(qualityDTO.getRelative())
+                .absolute(qualityDTO.getAbsolute())
+                .build();
+
+        return super.processing(bucketName, objectName, style);
+    }
+
+    @Override
+    public byte[] format(ImageFormatEnum imageFormatEnum, String bucketName, String objectName) {
+
+        String style = StyleBuilder.custom().image()
+                .processMode(ImageProcessingEnum.FORMAT)
+                .format(imageFormatEnum)
+                .build();
+
+        return super.processing(bucketName, objectName, style);
+    }
+
+    @Override
+    public byte[] autoOrient(Integer value, String bucketName, String objectName) {
+
+        String style = StyleBuilder.custom().image()
+                .processMode(ImageProcessingEnum.AUTO_ORIENT)
+                .value(value)
+                .build();
+
+        return super.processing(bucketName, objectName, style);
+    }
+
+    @Override
+    public byte[] circle(Integer value, String bucketName, String objectName) {
+
+        String style = StyleBuilder.custom().image()
+                .processMode(ImageProcessingEnum.CIRCLE)
+                .circle(value)
+                .build();
+
+        return super.processing(bucketName, objectName, style);
+    }
+
+    @Override
+    public byte[] indexCrop(Integer x, Integer y, Integer i, String bucketName, String objectName) {
+
+        String style = StyleBuilder.custom().image()
+                .processMode(ImageProcessingEnum.INDEX_CROP)
+                .x(x).y(y).i(i)
+                .build();
+
+        return super.processing(bucketName, objectName, style);
+    }
+
+    @Override
+    public byte[] roundedCorners(Integer radius, String bucketName, String objectName) {
+
+        String style = StyleBuilder.custom().image()
+                .processMode(ImageProcessingEnum.ROUNDED_CORNERS)
+                .radius(radius)
+                .build();
+
+        return super.processing(bucketName, objectName, style);
+    }
+
+    @Override
+    public byte[] blur(Integer radius, Integer deviation, String bucketName, String objectName) {
+
+        String style = StyleBuilder.custom().image()
+                .processMode(ImageProcessingEnum.BLUR)
+                .radius(radius)
+                .deviation(deviation)
+                .build();
+
+        return super.processing(bucketName, objectName, style);
+    }
+
+    @Override
+    public byte[] rotate(Integer value, String bucketName, String objectName) {
+
+        String style = StyleBuilder.custom().image()
+                .processMode(ImageProcessingEnum.ROTATE)
+                .value(value)
+                .build();
+
+        return super.processing(bucketName, objectName, style);
+    }
+
+    @Override
+    public byte[] interlace(Integer value, String bucketName, String objectName) {
+
+        String style = StyleBuilder.custom().image()
+                .processMode(ImageProcessingEnum.INTERLACE)
+                .value(value)
+                .build();
+
+        return super.processing(bucketName, objectName, style);
+
+    }
+
+    @Override
+    public byte[] bright(Integer value, String bucketName, String objectName) {
+
+        String style = StyleBuilder.custom().image()
+                .processMode(ImageProcessingEnum.BRIGHT)
+                .value(value)
+                .build();
+
+        return super.processing(bucketName, objectName, style);
+    }
+
+    @Override
+    public byte[] sharpen(Integer value, String bucketName, String objectName) {
+
+        String style = StyleBuilder.custom().image()
+                .processMode(ImageProcessingEnum.SHARPEN)
+                .value(value)
+                .build();
+
+        return super.processing(bucketName, objectName, style);
+    }
+
+    @Override
+    public byte[] contrast(Integer value, String bucketName, String objectName) {
+
+        String style = StyleBuilder.custom().image()
+                .processMode(ImageProcessingEnum.CONTRAST)
+                .value(value)
+                .build();
+
+        return super.processing(bucketName, objectName, style);
+    }
 
 }

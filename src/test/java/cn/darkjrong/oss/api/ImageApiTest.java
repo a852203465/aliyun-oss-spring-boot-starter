@@ -9,6 +9,7 @@ import cn.darkjrong.oss.common.pojo.dto.CropDTO;
 import cn.darkjrong.oss.common.pojo.dto.ResizeDTO;
 import cn.darkjrong.oss.common.pojo.dto.WatermarkDTO;
 import cn.darkjrong.oss.common.pojo.vo.ImageInfoVO;
+import cn.hutool.core.io.FileUtil;
 import org.junit.Test;
 
 import java.io.File;
@@ -227,6 +228,17 @@ public class ImageApiTest extends BaseApiTest {
                 10, 10);
 
         System.out.println(blur);
+
+    }
+
+    @Test
+    public void blur3() {
+
+        byte[] bytes = imageProcessingApi.blur(10, 10, "mrj123456mrj",
+                "2021-02-21/98c3f58faab94d518661b9d761d193a4-20210221181905631.jpg");
+
+        FileUtil.writeBytes(bytes, new File("F:\\1.jpg"));
+
 
     }
 
