@@ -8,11 +8,9 @@ import cn.darkjrong.oss.common.enums.ImageFormatEnum;
 import cn.darkjrong.oss.common.enums.ImageProcessingEnum;
 import cn.darkjrong.oss.common.enums.ZoomModeEnum;
 import cn.darkjrong.oss.common.exception.AliyunOSSClientException;
-import cn.darkjrong.oss.common.pojo.dto.CropDTO;
-import cn.darkjrong.oss.common.pojo.dto.QualityDTO;
-import cn.darkjrong.oss.common.pojo.dto.ResizeDTO;
-import cn.darkjrong.oss.common.pojo.dto.WatermarkDTO;
+import cn.darkjrong.oss.common.pojo.dto.*;
 import cn.darkjrong.oss.common.pojo.vo.ImageInfoVO;
+import cn.darkjrong.oss.common.utils.StyleUtils;
 import cn.hutool.core.io.IoUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.aliyun.oss.model.GetObjectRequest;
@@ -35,71 +33,26 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
 
     @Override
     public boolean resize(String bucketName, String objectName, ResizeDTO resizeDTO, File desFile) {
-
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.RESIZE)
-                .zoomMode(resizeDTO.getZoomModeEnum())
-                .width(resizeDTO.getWidth())
-                .height(resizeDTO.getHeight())
-                .longest(resizeDTO.getLongest())
-                .shortest(resizeDTO.getShortest())
-                .limit(resizeDTO.getLimit())
-                .color(resizeDTO.getColor())
-                .build();
-
-        if (ZoomModeEnum.PAD == resizeDTO.getZoomModeEnum()) {
-            style = StyleBuilder.custom().other(style, StyleBuilder.custom().color(resizeDTO.getColor()).build()).build();
-        }
-
+        String style = StyleUtils.resize(resizeDTO);
         return super.processing(bucketName, objectName, style, desFile);
     }
 
     @Override
     public boolean compression(String bucketName, String objectName, CompressedFormatEnum compressedFormatEnum, File desFile) {
-
-        String style = StyleBuilder.custom().image().processMode(ImageProcessingEnum.FORMAT).compression(compressedFormatEnum).build();
-
+        String style = StyleUtils.compression(compressedFormatEnum);
         return super.processing(bucketName, objectName, style, desFile);
     }
 
     @Override
     public boolean watermark(String bucketName, String objectName, WatermarkDTO watermarkDTO, File desFile) {
-
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.WATERMARK)
-                .transparency(watermarkDTO.getTransparency())
-                .location(watermarkDTO.getLocation())
-                .horizontalMargin(watermarkDTO.getHorizontalMargin())
-                .verticalMargin(watermarkDTO.getVerticalMargin())
-                .voffset(watermarkDTO.getVoffset())
-                .image(watermarkDTO.getImage())
-                .proportion(watermarkDTO.getProportion())
-                .text(watermarkDTO.getText())
-                .type(watermarkDTO.getType())
-                .size(watermarkDTO.getSize())
-                .shadow(watermarkDTO.getShadow())
-                .rotate(watermarkDTO.getRotate())
-                .fill(watermarkDTO.getFill())
-                .order(watermarkDTO.getOrder())
-                .align(watermarkDTO.getAlign())
-                .interval(watermarkDTO.getInterval())
-                .color(watermarkDTO.getColor())
-                .build();
-
+        String style =StyleUtils.watermark(watermarkDTO);
         return super.processing(bucketName, objectName, style, desFile);
     }
 
     @Override
     public boolean crop(String bucketName, String objectName, CropDTO cropDTO, File desFile) {
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.CROP)
-                .width(cropDTO.getWidth())
-                .height(cropDTO.getHeight())
-                .x(cropDTO.getX())
-                .y(cropDTO.getY())
-                .origin(cropDTO.getOrigin())
-                .build();
+        String style = StyleUtils.crop(cropDTO);
 
         return super.processing(bucketName, objectName, style, desFile);
     }
@@ -107,11 +60,7 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
     @Override
     public boolean quality(String bucketName, String objectName, QualityDTO qualityDTO, File desFile) {
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.QUALITY)
-                .relative(qualityDTO.getRelative())
-                .absolute(qualityDTO.getAbsolute())
-                .build();
+        String style = StyleUtils.quality(qualityDTO);
 
         return super.processing(bucketName, objectName, style, desFile);
     }
@@ -119,10 +68,7 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
     @Override
     public boolean format(String bucketName, String objectName, ImageFormatEnum imageFormatEnum, File desFile) {
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.FORMAT)
-                .format(imageFormatEnum)
-                .build();
+        String style = StyleUtils.format(imageFormatEnum);
 
         return super.processing(bucketName, objectName, style, desFile);
     }
@@ -130,10 +76,7 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
     @Override
     public boolean autoOrient(String bucketName, String objectName, Integer value, File desFile) {
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.AUTO_ORIENT)
-                .value(value)
-                .build();
+        String style = StyleUtils.autoOrient(value);
 
         return super.processing(bucketName, objectName, style, desFile);
     }
@@ -141,10 +84,7 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
     @Override
     public boolean circle(String bucketName, String objectName, Integer value, File desFile) {
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.CIRCLE)
-                .circle(value)
-                .build();
+        String style = StyleUtils.circle(value);
 
         return super.processing(bucketName, objectName, style, desFile);
     }
@@ -152,10 +92,7 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
     @Override
     public boolean indexCrop(String bucketName, String objectName, Integer x, Integer y, Integer i, File desFile) {
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.INDEX_CROP)
-                .x(x).y(y).i(i)
-                .build();
+        String style = StyleUtils.indexCrop(x, y, i);
 
         return super.processing(bucketName, objectName, style, desFile);
     }
@@ -163,10 +100,7 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
     @Override
     public boolean roundedCorners(String bucketName, String objectName, Integer radius, File desFile) {
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.ROUNDED_CORNERS)
-                .radius(radius)
-                .build();
+        String style = StyleUtils.roundedCorners(radius);
 
         return super.processing(bucketName, objectName, style, desFile);
     }
@@ -174,22 +108,14 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
     @Override
     public boolean blur(String bucketName, String objectName, Integer radius, Integer deviation, File desFile) {
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.BLUR)
-                .radius(radius)
-                .deviation(deviation)
-                .build();
-
+        String style = StyleUtils.blur(radius, deviation);
         return super.processing(bucketName, objectName, style, desFile);
     }
 
     @Override
     public boolean rotate(String bucketName, String objectName, Integer value, File desFile) {
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.ROTATE)
-                .value(value)
-                .build();
+        String style = StyleUtils.rotate(value);
 
         return super.processing(bucketName, objectName, style, desFile);
     }
@@ -197,10 +123,7 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
     @Override
     public boolean interlace(String bucketName, String objectName, Integer value, File desFile) {
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.INTERLACE)
-                .value(value)
-                .build();
+        String style = StyleUtils.interlace(value);
 
         return super.processing(bucketName, objectName, style, desFile);
 
@@ -209,10 +132,7 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
     @Override
     public boolean bright(String bucketName, String objectName, Integer value, File desFile) {
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.BRIGHT)
-                .value(value)
-                .build();
+        String style = StyleUtils.bright(value);
 
         return super.processing(bucketName, objectName, style, desFile);
     }
@@ -220,10 +140,7 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
     @Override
     public boolean sharpen(String bucketName, String objectName, Integer value, File desFile) {
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.SHARPEN)
-                .value(value)
-                .build();
+        String style = StyleUtils.sharpen(value);
 
         return super.processing(bucketName, objectName, style, desFile);
     }
@@ -231,10 +148,7 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
     @Override
     public boolean contrast(String bucketName, String objectName, Integer value, File desFile) {
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.CONTRAST)
-                .value(value)
-                .build();
+        String style = StyleUtils.contrast(value);
 
         return super.processing(bucketName, objectName, style, desFile);
     }
@@ -242,20 +156,7 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
     @Override
     public String resize(String bucketName, String objectName, ResizeDTO resizeDTO, Long expirationTime) {
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.RESIZE)
-                .zoomMode(resizeDTO.getZoomModeEnum())
-                .width(resizeDTO.getWidth())
-                .height(resizeDTO.getHeight())
-                .longest(resizeDTO.getLongest())
-                .shortest(resizeDTO.getShortest())
-                .limit(resizeDTO.getLimit())
-                .color(resizeDTO.getColor())
-                .build();
-
-        if (ZoomModeEnum.PAD == resizeDTO.getZoomModeEnum()) {
-            style = StyleBuilder.custom().other(style, StyleBuilder.custom().color(resizeDTO.getColor()).build()).build();
-        }
+        String style = StyleUtils.resize(resizeDTO);
 
         return super.processing(bucketName, objectName, style, expirationTime);
     }
@@ -263,34 +164,14 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
     @Override
     public String compression(String bucketName, String objectName, CompressedFormatEnum compressedFormatEnum, Long expirationTime) {
 
-        String style = StyleBuilder.custom().image().processMode(ImageProcessingEnum.FORMAT).compression(compressedFormatEnum).build();
-
+        String style = StyleUtils.compression(compressedFormatEnum);
         return super.processing(bucketName, objectName, style, expirationTime);
     }
 
     @Override
     public String watermark(String bucketName, String objectName, WatermarkDTO watermarkDTO, Long expirationTime) {
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.WATERMARK)
-                .transparency(watermarkDTO.getTransparency())
-                .location(watermarkDTO.getLocation())
-                .horizontalMargin(watermarkDTO.getHorizontalMargin())
-                .verticalMargin(watermarkDTO.getVerticalMargin())
-                .voffset(watermarkDTO.getVoffset())
-                .image(watermarkDTO.getImage())
-                .proportion(watermarkDTO.getProportion())
-                .text(watermarkDTO.getText())
-                .type(watermarkDTO.getType())
-                .size(watermarkDTO.getSize())
-                .shadow(watermarkDTO.getShadow())
-                .rotate(watermarkDTO.getRotate())
-                .fill(watermarkDTO.getFill())
-                .order(watermarkDTO.getOrder())
-                .align(watermarkDTO.getAlign())
-                .interval(watermarkDTO.getInterval())
-                .color(watermarkDTO.getColor())
-                .build();
+        String style = StyleUtils.watermark(watermarkDTO);
 
         return super.processing(bucketName, objectName, style, expirationTime);
     }
@@ -298,14 +179,7 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
     @Override
     public String crop(String bucketName, String objectName, CropDTO cropDTO, Long expirationTime) {
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.CROP)
-                .width(cropDTO.getWidth())
-                .height(cropDTO.getHeight())
-                .x(cropDTO.getX())
-                .y(cropDTO.getY())
-                .origin(cropDTO.getOrigin())
-                .build();
+        String style = StyleUtils.crop(cropDTO);
 
         return super.processing(bucketName, objectName, style, expirationTime);
     }
@@ -313,11 +187,7 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
     @Override
     public String quality(String bucketName, String objectName, QualityDTO qualityDTO, Long expirationTime) {
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.QUALITY)
-                .relative(qualityDTO.getRelative())
-                .absolute(qualityDTO.getAbsolute())
-                .build();
+        String style = StyleUtils.quality(qualityDTO);
 
         return super.processing(bucketName, objectName, style, expirationTime);
     }
@@ -325,10 +195,7 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
     @Override
     public String format(String bucketName, String objectName, ImageFormatEnum imageFormatEnum, Long expirationTime) {
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.FORMAT)
-                .format(imageFormatEnum)
-                .build();
+        String style = StyleUtils.format(imageFormatEnum);
 
         return super.processing(bucketName, objectName, style, expirationTime);
     }
@@ -336,9 +203,7 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
     @Override
     public ImageInfoVO info(String bucketName, String objectName) throws AliyunOSSClientException {
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.INFO)
-                .build();
+        String style = StyleUtils.info();
 
         GetObjectRequest request = new GetObjectRequest(bucketName, objectName);
         request.setProcess(style);
@@ -357,10 +222,7 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
     @Override
     public String autoOrient(String bucketName, String objectName, Integer value, Long expirationTime) {
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.AUTO_ORIENT)
-                .value(value)
-                .build();
+        String style = StyleUtils.autoOrient(value);
 
         return super.processing(bucketName, objectName, style, expirationTime);
     }
@@ -368,10 +230,7 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
     @Override
     public String circle(String bucketName, String objectName, Integer value, Long expirationTime) {
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.CIRCLE)
-                .circle(value)
-                .build();
+        String style = StyleUtils.circle(value);
 
         return super.processing(bucketName, objectName, style, expirationTime);
     }
@@ -379,10 +238,7 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
     @Override
     public String indexCrop(String bucketName, String objectName, Integer x, Integer y, Integer i, Long expirationTime) {
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.INDEX_CROP)
-                .x(x).y(y).i(i)
-                .build();
+        String style = StyleUtils.indexCrop(x, y, i);
 
         return super.processing(bucketName, objectName, style, expirationTime);
     }
@@ -390,10 +246,7 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
     @Override
     public String roundedCorners(String bucketName, String objectName, Integer radius, Long expirationTime) {
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.ROUNDED_CORNERS)
-                .radius(radius)
-                .build();
+        String style = StyleUtils.roundedCorners(radius);
 
         return super.processing(bucketName, objectName, style, expirationTime);
     }
@@ -401,11 +254,7 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
     @Override
     public String blur(String bucketName, String objectName, Integer radius, Integer deviation, Long expirationTime) {
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.BLUR)
-                .radius(radius)
-                .deviation(deviation)
-                .build();
+        String style = StyleUtils.blur(radius, deviation);
 
         return super.processing(bucketName, objectName, style, expirationTime);
     }
@@ -413,10 +262,7 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
     @Override
     public String rotate(String bucketName, String objectName, Integer value, Long expirationTime) {
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.ROTATE)
-                .value(value)
-                .build();
+        String style = StyleUtils.rotate(value);
 
         return super.processing(bucketName, objectName, style, expirationTime);
     }
@@ -424,10 +270,7 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
     @Override
     public String interlace(String bucketName, String objectName, Integer value, Long expirationTime) {
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.INTERLACE)
-                .value(value)
-                .build();
+        String style = StyleUtils.interlace(value);
 
         return super.processing(bucketName, objectName, style, expirationTime);
 
@@ -436,10 +279,7 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
     @Override
     public String bright(String bucketName, String objectName, Integer value, Long expirationTime) {
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.BRIGHT)
-                .value(value)
-                .build();
+        String style = StyleUtils.bright(value);
 
         return super.processing(bucketName, objectName, style, expirationTime);
     }
@@ -447,21 +287,14 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
     @Override
     public String sharpen(String bucketName, String objectName, Integer value, Long expirationTime) {
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.SHARPEN)
-                .value(value)
-                .build();
-
+        String style = StyleUtils.sharpen(value);
         return super.processing(bucketName, objectName, style, expirationTime);
     }
 
     @Override
     public String contrast(String bucketName, String objectName, Integer value, Long expirationTime) {
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.CONTRAST)
-                .value(value)
-                .build();
+        String style = StyleUtils.contrast(value);
 
         return super.processing(bucketName, objectName, style, expirationTime);
     }
@@ -571,20 +404,7 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
     @Override
     public byte[] resize(ResizeDTO resizeDTO, String bucketName, String objectName) {
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.RESIZE)
-                .zoomMode(resizeDTO.getZoomModeEnum())
-                .width(resizeDTO.getWidth())
-                .height(resizeDTO.getHeight())
-                .longest(resizeDTO.getLongest())
-                .shortest(resizeDTO.getShortest())
-                .limit(resizeDTO.getLimit())
-                .color(resizeDTO.getColor())
-                .build();
-
-        if (ZoomModeEnum.PAD == resizeDTO.getZoomModeEnum()) {
-            style = StyleBuilder.custom().other(style, StyleBuilder.custom().color(resizeDTO.getColor()).build()).build();
-        }
+        String style = StyleUtils.resize(resizeDTO);
 
         return super.processing(bucketName, objectName, style);
     }
@@ -592,34 +412,14 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
     @Override
     public byte[] compression(CompressedFormatEnum compressedFormatEnum, String bucketName, String objectName) {
 
-        String style = StyleBuilder.custom().image().processMode(ImageProcessingEnum.FORMAT).compression(compressedFormatEnum).build();
-
+        String style = StyleUtils.compression(compressedFormatEnum);
         return super.processing(bucketName, objectName, style);
     }
 
     @Override
     public byte[] watermark(WatermarkDTO watermarkDTO, String bucketName, String objectName) {
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.WATERMARK)
-                .transparency(watermarkDTO.getTransparency())
-                .location(watermarkDTO.getLocation())
-                .horizontalMargin(watermarkDTO.getHorizontalMargin())
-                .verticalMargin(watermarkDTO.getVerticalMargin())
-                .voffset(watermarkDTO.getVoffset())
-                .image(watermarkDTO.getImage())
-                .proportion(watermarkDTO.getProportion())
-                .text(watermarkDTO.getText())
-                .type(watermarkDTO.getType())
-                .size(watermarkDTO.getSize())
-                .shadow(watermarkDTO.getShadow())
-                .rotate(watermarkDTO.getRotate())
-                .fill(watermarkDTO.getFill())
-                .order(watermarkDTO.getOrder())
-                .align(watermarkDTO.getAlign())
-                .interval(watermarkDTO.getInterval())
-                .color(watermarkDTO.getColor())
-                .build();
+        String style = StyleUtils.watermark(watermarkDTO);
 
         return super.processing(bucketName, objectName, style);
     }
@@ -627,14 +427,7 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
     @Override
     public byte[] crop(CropDTO cropDTO, String bucketName, String objectName) {
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.CROP)
-                .width(cropDTO.getWidth())
-                .height(cropDTO.getHeight())
-                .x(cropDTO.getX())
-                .y(cropDTO.getY())
-                .origin(cropDTO.getOrigin())
-                .build();
+        String style = StyleUtils.crop(cropDTO);
 
         return super.processing(bucketName, objectName, style);
     }
@@ -642,11 +435,7 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
     @Override
     public byte[] quality(QualityDTO qualityDTO, String bucketName, String objectName) {
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.QUALITY)
-                .relative(qualityDTO.getRelative())
-                .absolute(qualityDTO.getAbsolute())
-                .build();
+        String style = StyleUtils.quality(qualityDTO);
 
         return super.processing(bucketName, objectName, style);
     }
@@ -654,10 +443,7 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
     @Override
     public byte[] format(ImageFormatEnum imageFormatEnum, String bucketName, String objectName) {
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.FORMAT)
-                .format(imageFormatEnum)
-                .build();
+        String style = StyleUtils.format(imageFormatEnum);
 
         return super.processing(bucketName, objectName, style);
     }
@@ -665,10 +451,7 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
     @Override
     public byte[] autoOrient(Integer value, String bucketName, String objectName) {
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.AUTO_ORIENT)
-                .value(value)
-                .build();
+        String style = StyleUtils.autoOrient(value);
 
         return super.processing(bucketName, objectName, style);
     }
@@ -676,10 +459,7 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
     @Override
     public byte[] circle(Integer value, String bucketName, String objectName) {
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.CIRCLE)
-                .circle(value)
-                .build();
+        String style = StyleUtils.circle(value);
 
         return super.processing(bucketName, objectName, style);
     }
@@ -687,10 +467,7 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
     @Override
     public byte[] indexCrop(Integer x, Integer y, Integer i, String bucketName, String objectName) {
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.INDEX_CROP)
-                .x(x).y(y).i(i)
-                .build();
+        String style = StyleUtils.indexCrop(x, y, i);
 
         return super.processing(bucketName, objectName, style);
     }
@@ -698,10 +475,7 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
     @Override
     public byte[] roundedCorners(Integer radius, String bucketName, String objectName) {
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.ROUNDED_CORNERS)
-                .radius(radius)
-                .build();
+        String style = StyleUtils.roundedCorners(radius);
 
         return super.processing(bucketName, objectName, style);
     }
@@ -709,11 +483,7 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
     @Override
     public byte[] blur(Integer radius, Integer deviation, String bucketName, String objectName) {
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.BLUR)
-                .radius(radius)
-                .deviation(deviation)
-                .build();
+        String style = StyleUtils.blur(radius, deviation);
 
         return super.processing(bucketName, objectName, style);
     }
@@ -721,10 +491,7 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
     @Override
     public byte[] rotate(Integer value, String bucketName, String objectName) {
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.ROTATE)
-                .value(value)
-                .build();
+        String style = StyleUtils.rotate(value);
 
         return super.processing(bucketName, objectName, style);
     }
@@ -732,10 +499,7 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
     @Override
     public byte[] interlace(Integer value, String bucketName, String objectName) {
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.INTERLACE)
-                .value(value)
-                .build();
+        String style = StyleUtils.interlace(value);
 
         return super.processing(bucketName, objectName, style);
 
@@ -744,10 +508,7 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
     @Override
     public byte[] bright(Integer value, String bucketName, String objectName) {
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.BRIGHT)
-                .value(value)
-                .build();
+        String style = StyleUtils.bright(value);
 
         return super.processing(bucketName, objectName, style);
     }
@@ -755,10 +516,7 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
     @Override
     public byte[] sharpen(Integer value, String bucketName, String objectName) {
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.SHARPEN)
-                .value(value)
-                .build();
+        String style = StyleUtils.sharpen(value);
 
         return super.processing(bucketName, objectName, style);
     }
@@ -766,12 +524,57 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
     @Override
     public byte[] contrast(Integer value, String bucketName, String objectName) {
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.CONTRAST)
-                .value(value)
-                .build();
+        String style = StyleUtils.contrast(value);
 
         return super.processing(bucketName, objectName, style);
     }
+
+    @Override
+    public boolean comprehensive(String bucketName, String objectName, ImageDTO imageDTO, File desFile) {
+        return super.processing(bucketName, objectName, StyleUtils.comprehensive(imageDTO), desFile);
+    }
+
+    @Override
+    public String comprehensive(String bucketName, String objectName, ImageDTO imageDTO) {
+        return this.comprehensive(bucketName, objectName, imageDTO, FileConstant.EXPIRATION_TIME);
+    }
+
+    @Override
+    public String comprehensive(String bucketName, String objectName, ImageDTO imageDTO, Long expirationTime) {
+        return super.processing(bucketName, objectName, StyleUtils.comprehensive(imageDTO), expirationTime);
+    }
+
+    @Override
+    public byte[] comprehensive(ImageDTO imageDTO, String bucketName, String objectName) {
+        return super.processing(bucketName, objectName, StyleUtils.comprehensive(imageDTO));
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

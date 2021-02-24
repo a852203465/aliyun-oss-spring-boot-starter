@@ -3,10 +3,7 @@ package cn.darkjrong.oss.api;
 import cn.darkjrong.oss.common.enums.CompressedFormatEnum;
 import cn.darkjrong.oss.common.enums.ImageFormatEnum;
 import cn.darkjrong.oss.common.exception.AliyunOSSClientException;
-import cn.darkjrong.oss.common.pojo.dto.CropDTO;
-import cn.darkjrong.oss.common.pojo.dto.QualityDTO;
-import cn.darkjrong.oss.common.pojo.dto.ResizeDTO;
-import cn.darkjrong.oss.common.pojo.dto.WatermarkDTO;
+import cn.darkjrong.oss.common.pojo.dto.*;
 import cn.darkjrong.oss.common.pojo.vo.ImageInfoVO;
 
 import java.io.File;
@@ -999,12 +996,43 @@ public interface ImageApi {
      */
     byte[] contrast(Integer value, String bucketName, String objectName);
 
+    /**
+     * 自由组合处理
+     * @param objectName 对象名称
+     * @param bucketName 存储空间
+     * @param imageDTO 处理参数
+     * @param desFile 版本保存文件
+     * @return 是否成功 true: 成功，false: 失败
+     */
+    boolean comprehensive(String bucketName, String objectName, ImageDTO imageDTO, File desFile);
 
+    /**
+     * 自由组合处理
+     * @param objectName 对象名称
+     * @param bucketName 存储空间
+     * @param imageDTO 处理参数
+     * @return 图片URL
+     */
+    String comprehensive(String bucketName, String objectName, ImageDTO imageDTO);
 
+    /**
+     * 自由组合处理
+     * @param objectName 对象名称
+     * @param bucketName 存储空间
+     * @param imageDTO 处理参数
+     * @param expirationTime 图片URL有效时间，单位：毫秒
+     * @return 图片URL
+     */
+    String comprehensive(String bucketName, String objectName, ImageDTO imageDTO, Long expirationTime);
 
-
-
-
+    /**
+     * 自由组合处理
+     * @param objectName 对象名称
+     * @param bucketName 存储空间
+     * @param imageDTO 处理参数
+     * @return 文件字节数组
+     */
+    byte[] comprehensive(ImageDTO imageDTO, String bucketName, String objectName);
 
 
 
