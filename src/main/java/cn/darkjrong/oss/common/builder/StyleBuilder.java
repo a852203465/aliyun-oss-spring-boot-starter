@@ -36,7 +36,10 @@ public class StyleBuilder {
      * @return 返回当前对象
      */
     public StyleBuilder image(){
-        buffer.append("image");
+        if (!StrUtil.contains(buffer.toString(), "image")) {
+            buffer.append("image");
+        }
+
         return this;
     }
 
@@ -45,7 +48,9 @@ public class StyleBuilder {
      * @return 返回当前对象
      */
     public StyleBuilder video(){
-        buffer.append("video");
+        if (!StrUtil.contains(buffer.toString(), "video")) {
+            buffer.append("video");
+        }
         return this;
     }
 
@@ -178,7 +183,12 @@ public class StyleBuilder {
      * @return 返回当前对象
      */
     public StyleBuilder other(String key, String value) {
-        buffer.append(key).append(StrUtil.COMMA).append(value).append(StrUtil.COMMA);
+        if (ObjectUtil.isNotNull(key) && ObjectUtil.isNotNull(value)) {
+            if (StrUtil.isNotBlank(key)) {
+                buffer.append(key);
+            }
+            buffer.append(value);
+        }
         return this;
     }
 
@@ -496,7 +506,9 @@ public class StyleBuilder {
      * @return 返回当前对象
      */
     public StyleBuilder value(Integer value) {
-        buffer.append(value).append(StrUtil.COMMA);
+        if (ObjectUtil.isNotNull(value)) {
+            buffer.append(value).append(StrUtil.COMMA);
+        }
         return this;
     }
 

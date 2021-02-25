@@ -1,6 +1,7 @@
 package cn.darkjrong.oss.api.impl;
 
 import cn.darkjrong.oss.api.ImageApi;
+import cn.darkjrong.oss.callback.ImageStyleCallBack;
 import cn.darkjrong.oss.common.builder.StyleBuilder;
 import cn.darkjrong.oss.common.constants.FileConstant;
 import cn.darkjrong.oss.common.enums.CompressedFormatEnum;
@@ -549,32 +550,23 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
         return super.processing(bucketName, objectName, StyleUtils.comprehensive(imageDTO));
     }
 
+    @Override
+    public boolean comprehensive(String bucketName, String objectName, ImageDTO imageDTO, ImageStyleCallBack imageStyleCallBack, File desFile) {
+        return super.processing(bucketName, objectName, imageStyleCallBack.comprehensive(imageDTO), desFile);
+    }
 
+    @Override
+    public String comprehensive(String bucketName, String objectName, ImageStyleCallBack imageStyleCallBack, ImageDTO imageDTO) {
+        return super.processing(bucketName, objectName, imageStyleCallBack.comprehensive(imageDTO), FileConstant.EXPIRATION_TIME);
+    }
 
+    @Override
+    public String comprehensive(String bucketName, String objectName, ImageDTO imageDTO, ImageStyleCallBack imageStyleCallBack, Long expirationTime) {
+        return super.processing(bucketName, objectName, imageStyleCallBack.comprehensive(imageDTO), expirationTime);
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    @Override
+    public byte[] comprehensive(ImageDTO imageDTO, ImageStyleCallBack imageStyleCallBack, String bucketName, String objectName) {
+        return super.processing(bucketName, objectName, imageStyleCallBack.comprehensive(imageDTO));
+    }
 }

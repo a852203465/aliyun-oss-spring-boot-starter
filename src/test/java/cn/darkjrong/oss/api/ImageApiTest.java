@@ -3,12 +3,12 @@ package cn.darkjrong.oss.api;
 import cn.darkjrong.oss.api.impl.BucketApiImpl;
 import cn.darkjrong.oss.api.impl.ImageApiImpl;
 import cn.darkjrong.oss.api.impl.PresignedUrlApiImpl;
+import cn.darkjrong.oss.callback.ImageStyleCallBack;
 import cn.darkjrong.oss.common.enums.CompressedFormatEnum;
 import cn.darkjrong.oss.common.enums.ZoomModeEnum;
-import cn.darkjrong.oss.common.pojo.dto.CropDTO;
-import cn.darkjrong.oss.common.pojo.dto.ResizeDTO;
-import cn.darkjrong.oss.common.pojo.dto.WatermarkDTO;
+import cn.darkjrong.oss.common.pojo.dto.*;
 import cn.darkjrong.oss.common.pojo.vo.ImageInfoVO;
+import cn.darkjrong.oss.common.utils.StyleUtils;
 import cn.hutool.core.io.FileUtil;
 import org.junit.Test;
 
@@ -241,5 +241,67 @@ public class ImageApiTest extends BaseApiTest {
 
 
     }
+
+    @Test
+    public void comprehensive() {
+
+        ImageDTO imageDTO = new ImageDTO();
+
+        ResizeDTO resizeDTO = new ResizeDTO();
+        resizeDTO.setHeight(1000);
+        resizeDTO.setWidth(1000);
+        resizeDTO.setZoomModeEnum(ZoomModeEnum.FIXED);
+        imageDTO.setResize(resizeDTO);
+
+        WatermarkDTO watermarkDTO = new WatermarkDTO();
+        watermarkDTO.setText("测试");
+        imageDTO.setWatermark(watermarkDTO);
+
+        BlurDTO blurDTO = new BlurDTO();
+        blurDTO.setDeviation(10);
+        blurDTO.setRadius(20);
+        imageDTO.setBlur(blurDTO);
+
+        String comprehensive = StyleUtils.comprehensive(imageDTO);
+        System.out.println(comprehensive);
+
+        String comprehensive1 = imageProcessingApi.comprehensive("mrj123456mrj",
+                "2021-02-21/98c3f58faab94d518661b9d761d193a4-20210221181905631.jpg", imageDTO);
+        System.out.println(comprehensive1);
+    }
+
+    @Test
+    public void comprehensive1() {
+
+        ImageDTO imageDTO = new ImageDTO();
+
+        ResizeDTO resizeDTO = new ResizeDTO();
+        resizeDTO.setHeight(1000);
+        resizeDTO.setWidth(1000);
+        resizeDTO.setZoomModeEnum(ZoomModeEnum.FIXED);
+        imageDTO.setResize(resizeDTO);
+
+        WatermarkDTO watermarkDTO = new WatermarkDTO();
+        watermarkDTO.setText("测试");
+        imageDTO.setWatermark(watermarkDTO);
+
+        BlurDTO blurDTO = new BlurDTO();
+        blurDTO.setDeviation(10);
+        blurDTO.setRadius(20);
+        imageDTO.setBlur(blurDTO);
+
+//        String comprehensive = StyleUtils.comprehensive(imageDTO);
+//        System.out.println(comprehensive);
+
+        boolean comprehensive1 = imageProcessingApi.comprehensive("mrj123456mrj",
+                "2021-02-21/98c3f58faab94d518661b9d761d193a4-20210221181905631.jpg", imageDTO, new ImageStyleCallBack() {
+                    @Override
+                    public String comprehensive(ImageDTO imageDTO) {
+                        return StyleUtils.comprehensive(imageDTO);
+                    }
+                }, new File("F:\\1.jpg"));
+        System.out.println(comprehensive1);
+    }
+
 
 }

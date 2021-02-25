@@ -22,14 +22,19 @@ public class ImageDTO implements Serializable {
     private ResizeDTO resize;
 
     /**
-     * 压缩文件
+     * 格式转换
      */
-    private CompressedFormatEnum compression;
+    private ImageFormatEnum format;
 
     /**
      * 图片水印
      */
     private WatermarkDTO watermark;
+
+    /**
+     * 压缩文件
+     */
+    private CompressedFormatEnum compression;
 
     /**
      * 裁剪
@@ -40,11 +45,6 @@ public class ImageDTO implements Serializable {
      * 质量变换
      */
     private QualityDTO quality;
-
-    /**
-     * 格式转换
-     */
-    private ImageFormatEnum format;
 
     /**
      * 自适应方向
@@ -60,17 +60,6 @@ public class ImageDTO implements Serializable {
      * 索引切割
      */
     private IndexCropDTO indexCrop;
-
-    /**
-     * 圆角矩形
-     * 模糊效果-模糊半径 [1,50] 该值越大，图片越模糊
-     */
-    private Integer radius;
-
-    /**
-     * 模糊效果-正态分布的标准差 [1,50] 该值越大，图片越模糊
-     */
-    private Integer deviation;
 
     /**
      * 旋转角度
@@ -97,9 +86,15 @@ public class ImageDTO implements Serializable {
      */
     private Integer contrast;
 
+    /**
+     * 圆角矩形
+     */
+    private Integer roundedCorners;
 
-
-
+    /**
+     * 模糊效果
+     */
+    private BlurDTO blur;
 
 
 

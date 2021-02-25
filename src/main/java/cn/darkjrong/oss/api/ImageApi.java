@@ -1,5 +1,6 @@
 package cn.darkjrong.oss.api;
 
+import cn.darkjrong.oss.callback.ImageStyleCallBack;
 import cn.darkjrong.oss.common.enums.CompressedFormatEnum;
 import cn.darkjrong.oss.common.enums.ImageFormatEnum;
 import cn.darkjrong.oss.common.exception.AliyunOSSClientException;
@@ -1033,6 +1034,47 @@ public interface ImageApi {
      * @return 文件字节数组
      */
     byte[] comprehensive(ImageDTO imageDTO, String bucketName, String objectName);
+
+    /**
+     * 自由组合处理
+     * @param objectName 对象名称
+     * @param bucketName 存储空间
+     * @param imageDTO 处理参数
+     * @param desFile 版本保存文件
+     * @param imageStyleCallBack 图片处理样式回调
+     * @return 是否成功 true: 成功，false: 失败
+     */
+    boolean comprehensive(String bucketName, String objectName, ImageDTO imageDTO, ImageStyleCallBack imageStyleCallBack, File desFile);
+
+    /**
+     * 自由组合处理
+     * @param objectName 对象名称
+     * @param bucketName 存储空间
+     * @param imageDTO 处理参数
+     * @param imageStyleCallBack 图片处理样式回调
+     * @return 图片URL
+     */
+    String comprehensive(String bucketName, String objectName, ImageStyleCallBack imageStyleCallBack, ImageDTO imageDTO);
+
+    /**
+     * 自由组合处理
+     * @param objectName 对象名称
+     * @param bucketName 存储空间
+     * @param imageDTO 处理参数
+     * @param expirationTime 图片URL有效时间，单位：毫秒
+     * @return 图片URL
+     */
+    String comprehensive(String bucketName, String objectName, ImageDTO imageDTO, ImageStyleCallBack imageStyleCallBack, Long expirationTime);
+
+    /**
+     * 自由组合处理
+     * @param objectName 对象名称
+     * @param bucketName 存储空间
+     * @param imageDTO 处理参数
+     * @param imageStyleCallBack 图片处理样式回调
+     * @return 文件字节数组
+     */
+    byte[] comprehensive(ImageDTO imageDTO, ImageStyleCallBack imageStyleCallBack, String bucketName, String objectName);
 
 
 

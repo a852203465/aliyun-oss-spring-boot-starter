@@ -1,11 +1,18 @@
 package cn.darkjrong.oss.common.utils;
 
 import cn.darkjrong.oss.common.builder.StyleBuilder;
+import cn.darkjrong.oss.common.constants.ImageProcessingConstant;
 import cn.darkjrong.oss.common.enums.CompressedFormatEnum;
 import cn.darkjrong.oss.common.enums.ImageFormatEnum;
 import cn.darkjrong.oss.common.enums.ImageProcessingEnum;
 import cn.darkjrong.oss.common.enums.ZoomModeEnum;
 import cn.darkjrong.oss.common.pojo.dto.*;
+import cn.hutool.core.convert.Convert;
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.ReflectUtil;
+import cn.hutool.core.util.StrUtil;
+
+import java.lang.reflect.Field;
 
 /**
  *  样式工具类
@@ -20,23 +27,25 @@ public class StyleUtils {
      * @return 样式
      */
     public static String resize(ResizeDTO resizeDTO) {
+        if (ObjectUtil.isNotNull(resizeDTO)) {
+            String style = StyleBuilder.custom().image()
+                    .processMode(ImageProcessingEnum.RESIZE)
+                    .zoomMode(resizeDTO.getZoomModeEnum())
+                    .width(resizeDTO.getWidth())
+                    .height(resizeDTO.getHeight())
+                    .longest(resizeDTO.getLongest())
+                    .shortest(resizeDTO.getShortest())
+                    .limit(resizeDTO.getLimit())
+                    .color(resizeDTO.getColor())
+                    .build();
 
-        String style = StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.RESIZE)
-                .zoomMode(resizeDTO.getZoomModeEnum())
-                .width(resizeDTO.getWidth())
-                .height(resizeDTO.getHeight())
-                .longest(resizeDTO.getLongest())
-                .shortest(resizeDTO.getShortest())
-                .limit(resizeDTO.getLimit())
-                .color(resizeDTO.getColor())
-                .build();
+            if (ZoomModeEnum.PAD == resizeDTO.getZoomModeEnum()) {
+                style = style + ImageProcessingConstant.COLOR + StrUtil.UNDERLINE + resizeDTO.getColor();
+            }
 
-        if (ZoomModeEnum.PAD == resizeDTO.getZoomModeEnum()) {
-            style = StyleBuilder.custom().other(style, StyleBuilder.custom().color(resizeDTO.getColor()).build()).build();
+            return style;
         }
-
-        return style;
+        return StrUtil.EMPTY;
     }
 
     /**
@@ -45,8 +54,11 @@ public class StyleUtils {
      * @return 样式
      */
     public static String compression(CompressedFormatEnum compressedFormatEnum) {
-        return StyleBuilder.custom().image().processMode(ImageProcessingEnum.FORMAT)
-                .compression(compressedFormatEnum).build();
+        if (ObjectUtil.isNotNull(compressedFormatEnum)) {
+            return StyleBuilder.custom().image().processMode(ImageProcessingEnum.FORMAT)
+                    .compression(compressedFormatEnum).build();
+        }
+        return StrUtil.EMPTY;
     }
 
     /**
@@ -55,26 +67,29 @@ public class StyleUtils {
      * @return 样式
      */
     public static String watermark(WatermarkDTO watermarkDTO) {
-        return StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.WATERMARK)
-                .transparency(watermarkDTO.getTransparency())
-                .location(watermarkDTO.getLocation())
-                .horizontalMargin(watermarkDTO.getHorizontalMargin())
-                .verticalMargin(watermarkDTO.getVerticalMargin())
-                .voffset(watermarkDTO.getVoffset())
-                .image(watermarkDTO.getImage())
-                .proportion(watermarkDTO.getProportion())
-                .text(watermarkDTO.getText())
-                .type(watermarkDTO.getType())
-                .size(watermarkDTO.getSize())
-                .shadow(watermarkDTO.getShadow())
-                .rotate(watermarkDTO.getRotate())
-                .fill(watermarkDTO.getFill())
-                .order(watermarkDTO.getOrder())
-                .align(watermarkDTO.getAlign())
-                .interval(watermarkDTO.getInterval())
-                .color(watermarkDTO.getColor())
-                .build();
+        if (ObjectUtil.isNotNull(watermarkDTO)) {
+            return StyleBuilder.custom().image()
+                    .processMode(ImageProcessingEnum.WATERMARK)
+                    .transparency(watermarkDTO.getTransparency())
+                    .location(watermarkDTO.getLocation())
+                    .horizontalMargin(watermarkDTO.getHorizontalMargin())
+                    .verticalMargin(watermarkDTO.getVerticalMargin())
+                    .voffset(watermarkDTO.getVoffset())
+                    .image(watermarkDTO.getImage())
+                    .proportion(watermarkDTO.getProportion())
+                    .text(watermarkDTO.getText())
+                    .type(watermarkDTO.getType())
+                    .size(watermarkDTO.getSize())
+                    .shadow(watermarkDTO.getShadow())
+                    .rotate(watermarkDTO.getRotate())
+                    .fill(watermarkDTO.getFill())
+                    .order(watermarkDTO.getOrder())
+                    .align(watermarkDTO.getAlign())
+                    .interval(watermarkDTO.getInterval())
+                    .color(watermarkDTO.getColor())
+                    .build();
+        }
+        return StrUtil.EMPTY;
     }
 
     /**
@@ -83,14 +98,17 @@ public class StyleUtils {
      * @return 样式
      */
     public static String crop(CropDTO cropDTO) {
-        return StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.CROP)
-                .width(cropDTO.getWidth())
-                .height(cropDTO.getHeight())
-                .x(cropDTO.getX())
-                .y(cropDTO.getY())
-                .origin(cropDTO.getOrigin())
-                .build();
+        if (ObjectUtil.isNotNull(cropDTO)) {
+            return StyleBuilder.custom().image()
+                    .processMode(ImageProcessingEnum.CROP)
+                    .width(cropDTO.getWidth())
+                    .height(cropDTO.getHeight())
+                    .x(cropDTO.getX())
+                    .y(cropDTO.getY())
+                    .origin(cropDTO.getOrigin())
+                    .build();
+        }
+        return StrUtil.EMPTY;
     }
 
     /**
@@ -99,11 +117,14 @@ public class StyleUtils {
      * @return 样式
      */
     public static String quality(QualityDTO qualityDTO) {
-        return StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.QUALITY)
-                .relative(qualityDTO.getRelative())
-                .absolute(qualityDTO.getAbsolute())
-                .build();
+        if (ObjectUtil.isNotNull(qualityDTO)) {
+            return StyleBuilder.custom().image()
+                    .processMode(ImageProcessingEnum.QUALITY)
+                    .relative(qualityDTO.getRelative())
+                    .absolute(qualityDTO.getAbsolute())
+                    .build();
+        }
+       return StrUtil.EMPTY;
     }
 
     /**
@@ -112,22 +133,13 @@ public class StyleUtils {
      * @return 样式
      */
     public static String format(ImageFormatEnum imageFormatEnum) {
-        return StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.FORMAT)
-                .format(imageFormatEnum)
-                .build();
-    }
-
-    /**
-     * 自适应方向
-     * @param value 参数
-     * @return 样式
-     */
-    public static String autoOrient(Integer value) {
-        return StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.AUTO_ORIENT)
-                .value(value)
-                .build();
+        if (ObjectUtil.isNotNull(imageFormatEnum)) {
+            return StyleBuilder.custom().image()
+                    .processMode(ImageProcessingEnum.FORMAT)
+                    .format(imageFormatEnum)
+                    .build();
+        }
+       return StrUtil.EMPTY;
     }
 
     /**
@@ -136,10 +148,13 @@ public class StyleUtils {
      * @return 样式
      */
     public static String circle(Integer value) {
-        return StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.CIRCLE)
-                .circle(value)
-                .build();
+        if (ObjectUtil.isNotNull(value)) {
+            return StyleBuilder.custom().image()
+                    .processMode(ImageProcessingEnum.CIRCLE)
+                    .circle(value)
+                    .build();
+        }
+       return StrUtil.EMPTY;
     }
 
     /**
@@ -150,10 +165,13 @@ public class StyleUtils {
      * @return 样式
      */
     public static String indexCrop(Integer x, Integer y, Integer i) {
-        return StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.INDEX_CROP)
-                .x(x).y(y).i(i)
-                .build();
+        if (ObjectUtil.isNotNull(x) || ObjectUtil.isNotNull(y) || ObjectUtil.isNotNull(i)) {
+            return StyleBuilder.custom().image()
+                    .processMode(ImageProcessingEnum.INDEX_CROP)
+                    .x(x).y(y).i(i)
+                    .build();
+        }
+        return StrUtil.EMPTY;
     }
 
     /**
@@ -162,10 +180,13 @@ public class StyleUtils {
      * @return 样式
      */
     public static String roundedCorners(Integer value) {
-        return StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.ROUNDED_CORNERS)
-                .radius(value)
-                .build();
+        if (ObjectUtil.isNotNull(value)) {
+            return StyleBuilder.custom().image()
+                    .processMode(ImageProcessingEnum.ROUNDED_CORNERS)
+                    .radius(value)
+                    .build();
+        }
+        return StrUtil.EMPTY;
     }
 
     /**
@@ -175,11 +196,23 @@ public class StyleUtils {
      * @return 样式
      */
     public static String blur(Integer radius, Integer deviation) {
-        return StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.BLUR)
-                .radius(radius)
-                .deviation(deviation)
-                .build();
+        if (ObjectUtil.isNotNull(radius) || ObjectUtil.isNotNull(deviation)) {
+            return StyleBuilder.custom().image()
+                    .processMode(ImageProcessingEnum.BLUR)
+                    .radius(radius)
+                    .deviation(deviation)
+                    .build();
+        }
+        return StrUtil.EMPTY;
+    }
+
+    /**
+     * 自适应方向
+     * @param value 参数
+     * @return 样式
+     */
+    public static String autoOrient(Integer value) {
+        return value(ImageProcessingEnum.AUTO_ORIENT, value);
     }
 
     /**
@@ -188,10 +221,7 @@ public class StyleUtils {
      * @return 样式
      */
     public static String rotate(Integer value) {
-        return StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.ROTATE)
-                .value(value)
-                .build();
+        return value(ImageProcessingEnum.ROTATE, value);
     }
 
     /**
@@ -200,10 +230,7 @@ public class StyleUtils {
      * @return 样式
      */
     public static String interlace(Integer value) {
-        return StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.INTERLACE)
-                .value(value)
-                .build();
+        return value(ImageProcessingEnum.INTERLACE, value);
     }
 
     /**
@@ -212,10 +239,7 @@ public class StyleUtils {
      * @return 样式
      */
     public static String bright(Integer value) {
-        return StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.BRIGHT)
-                .value(value)
-                .build();
+        return value(ImageProcessingEnum.BRIGHT, value);
     }
 
     /**
@@ -224,10 +248,7 @@ public class StyleUtils {
      * @return 样式
      */
     public static String sharpen(Integer value) {
-        return StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.SHARPEN)
-                .value(value)
-                .build();
+        return value(ImageProcessingEnum.SHARPEN, value);
     }
 
     /**
@@ -236,10 +257,23 @@ public class StyleUtils {
      * @return 样式
      */
     public static String contrast(Integer value) {
-        return StyleBuilder.custom().image()
-                .processMode(ImageProcessingEnum.CONTRAST)
-                .value(value)
-                .build();
+        return value(ImageProcessingEnum.CONTRAST, value);
+    }
+
+    /**
+     *  设置样式，不做任何拼接
+     * @param imageProcessingEnum 处理方式
+     * @param value 值
+     * @return 样式
+     */
+    private static String value(ImageProcessingEnum imageProcessingEnum, Integer value) {
+        if (ObjectUtil.isNotNull(imageProcessingEnum) && ObjectUtil.isNotNull(value)) {
+            return StyleBuilder.custom().image()
+                    .processMode(imageProcessingEnum)
+                    .value(value)
+                    .build();
+        }
+        return StrUtil.EMPTY;
     }
 
     /**
@@ -259,41 +293,117 @@ public class StyleUtils {
      */
     public static String comprehensive(ImageDTO imageDTO) {
 
+        Field[] fields = ReflectUtil.getFields(imageDTO.getClass());
 
+        String style = StrUtil.EMPTY;
 
+        for (Field field : fields) {
+            style = getStyle(imageDTO, style, field);
+        }
 
+        if (StrUtil.count(style, "image") > 1) {
+            style = "image" + StrUtil.replace(style, "image", StrUtil.EMPTY);
+        }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        return null;
-
+        return style;
     }
+
+    private static String getStyle(ImageDTO imageDTO, String style, Field field) {
+
+        Class<?> fieldType = field.getType();
+        Object fieldValue = ReflectUtil.getFieldValue(imageDTO, field);
+        if (fieldType.equals(ResizeDTO.class)) {
+            ResizeDTO resizeDTO = (ResizeDTO) fieldValue;
+            if (ObjectUtil.isNotNull(resizeDTO)) {
+                style = StyleBuilder.custom().other(style, StyleUtils.resize(resizeDTO)).build();
+            }
+        }else if (fieldType.equals(ImageFormatEnum.class)) {
+            ImageFormatEnum imageFormatEnum = (ImageFormatEnum) fieldValue;
+            if (ObjectUtil.isNotNull(imageFormatEnum)) {
+                style = StyleBuilder.custom().other(style, StyleUtils.format(imageFormatEnum)).build();
+            }
+        }else if (fieldType.equals(WatermarkDTO.class)) {
+            WatermarkDTO watermarkDTO = (WatermarkDTO) fieldValue;
+            if (ObjectUtil.isNotNull(watermarkDTO)) {
+                style = StyleBuilder.custom().other(style, StyleUtils.watermark(watermarkDTO)).build();
+            }
+        }else if (fieldType.equals(CompressedFormatEnum.class)) {
+            CompressedFormatEnum compressedFormatEnum = (CompressedFormatEnum) fieldValue;
+            if (ObjectUtil.isNotNull(compressedFormatEnum)) {
+                style = StyleBuilder.custom().other(style, StyleUtils.compression(compressedFormatEnum)).build();
+            }
+        }else if (fieldType.equals(CropDTO.class)) {
+            CropDTO cropDTO = (CropDTO) fieldValue;
+            if (ObjectUtil.isNotNull(cropDTO)) {
+                style = StyleBuilder.custom().other(style, StyleUtils.crop(cropDTO)).build();
+            }
+        }else if (fieldType.equals(QualityDTO.class)) {
+            QualityDTO qualityDTO = (QualityDTO) fieldValue;
+            if (ObjectUtil.isNotNull(qualityDTO)) {
+                style = StyleBuilder.custom().other(style, StyleUtils.quality(qualityDTO)).build();
+            }
+        }else if (fieldType.equals(IndexCropDTO.class)) {
+            IndexCropDTO indexCropDTO = (IndexCropDTO) fieldValue;
+            if (ObjectUtil.isNotNull(indexCropDTO)) {
+                style = StyleBuilder.custom()
+                        .other(style, StyleUtils.indexCrop(indexCropDTO.getX(),
+                                indexCropDTO.getY(), indexCropDTO.getI())).build();
+            }
+        }else if (fieldType.equals(BlurDTO.class)) {
+            BlurDTO blurDTO = (BlurDTO) fieldValue;
+            if (ObjectUtil.isNotNull(blurDTO)) {
+                style = StyleBuilder.custom()
+                        .other(style, StyleUtils.blur(blurDTO.getRadius(), blurDTO.getDeviation())).build();
+            }
+        }else if (fieldType.equals(Integer.class)) {
+            String name = field.getName();
+            Integer value = Convert.toInt(fieldValue);
+            if ("autoOrient".equals(name)) {
+                style = StyleBuilder.custom().other(style, autoOrient(value)).build();
+            }else if ("circle".equals(name)) {
+                style = StyleBuilder.custom().other(style, circle(value)).build();
+            }else if ("rotate".equals(name)) {
+                style = StyleBuilder.custom().other(style, rotate(value)).build();
+            }else if ("interlace".equals(name)) {
+                style = StyleBuilder.custom().other(style, interlace(value)).build();
+            }else if ("bright".equals(name)) {
+                style = StyleBuilder.custom().other(style, bright(value)).build();
+            }else if ("sharpen".equals(name)) {
+                style = StyleBuilder.custom().other(style, sharpen(value)).build();
+            }else if ("contrast".equals(name)) {
+                style = StyleBuilder.custom().other(style, contrast(value)).build();
+            }else if ("roundedCorners".equals(name)) {
+                style = StyleBuilder.custom().other(style, roundedCorners(value)).build();
+            }
+        }
+
+        return style;
+    }
+
+
+    public static void main(String[] args) {
+
+        ImageDTO imageDTO = new ImageDTO();
+
+        ResizeDTO resizeDTO = new ResizeDTO();
+        resizeDTO.setHeight(1000);
+        resizeDTO.setWidth(1000);
+        resizeDTO.setZoomModeEnum(ZoomModeEnum.FIXED);
+        imageDTO.setResize(resizeDTO);
+
+        WatermarkDTO watermarkDTO = new WatermarkDTO();
+        watermarkDTO.setText("测试");
+        imageDTO.setWatermark(watermarkDTO);
+
+        BlurDTO blurDTO = new BlurDTO();
+        blurDTO.setDeviation(10);
+        blurDTO.setRadius(20);
+        imageDTO.setBlur(blurDTO);
+
+        String comprehensive = StyleUtils.comprehensive(imageDTO);
+        System.out.println(comprehensive);
+    }
+
 
 
 }
