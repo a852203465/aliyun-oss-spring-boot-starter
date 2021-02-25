@@ -90,5 +90,35 @@ public class ProgressCallBackImpl implements ProgressCallBack {
     }
 }
 ```
+6. 样式回调
+```java
+/**
+ *  样式处理回调， 主要用于自由组合图片处理顺序
+ * @author Rong.Jia
+ * @date 2021/02/25 18:22
+ */
+@Component
+public class ImageStyleCallBackImpl implements ImageStyleCallBack {
+
+    /**
+     *  样式回调
+     * @param imageDTO 组合样式参数
+     * @return 样式 格式如：image/resize,fixed,w_1000,h_1000,limit_1/watermark,text_5rWL6K-V/blur,r_20,s_10
+     */
+    @Override
+    public String comprehensive(ImageDTO imageDTO) {
+
+        // 可自行安装格式拼接即可
+        return StyleUtils.comprehensive(imageDTO);
+    }
+}
+```
+
+
+
+
+
+
+
 
 
