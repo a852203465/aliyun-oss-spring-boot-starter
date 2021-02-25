@@ -108,7 +108,7 @@ public class ImageStyleCallBackImpl implements ImageStyleCallBack {
     @Override
     public String comprehensive(ImageDTO imageDTO) {
 
-        // 可自行安装格式拼接即可
+        // 可自行按照格式拼接即可
         return StyleUtils.comprehensive(imageDTO);
     }
 }
