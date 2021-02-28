@@ -79,7 +79,7 @@ public class BaseApiImpl {
      * @author Rong.Jia
      * @date 2021/02/21 17:22
      */
-    protected class FileProgressListener implements ProgressListener {
+    protected static class FileProgressListener implements ProgressListener {
 
         private long completeBytes = 0;
         private long totalBytes = -1;
@@ -89,6 +89,7 @@ public class BaseApiImpl {
 
         public FileProgressListener(ProgressCallBack progressCallBack, String objectName) {
             this.progressCallBack = progressCallBack;
+            this.objectName = objectName;
         }
 
         @Override
@@ -112,13 +113,13 @@ public class BaseApiImpl {
                     break;
                 case TRANSFER_COMPLETED_EVENT:
 
-                    // 上传成功
+                    // 上传、下载成功
 //                    progressCallBack.progress(totalBytes, completeBytes, Boolean.TRUE);
                     this.succeed = Boolean.TRUE;
                     break;
                 case TRANSFER_FAILED_EVENT:
 
-                    // 上传失败
+                    // 上传、下载失败
                     progressCallBack.progress(objectName, totalBytes, completeBytes, Boolean.FALSE);
                     this.succeed = Boolean.FALSE;
                     break;
