@@ -36,7 +36,7 @@
   accessKeySecret: 
   # 内网地址
   intranet: http://oss-cn-shenzhen.aliyuncs.com
-  # 是否使用内外模式上传， 开启：true, 关闭：false
+  # 是否使用内网模式上传， 开启：true, 关闭：false
   openIntranet: true
 ```
 4. API 注入
