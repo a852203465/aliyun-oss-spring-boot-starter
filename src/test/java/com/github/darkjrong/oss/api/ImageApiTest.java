@@ -6,7 +6,6 @@ import com.github.darkjrong.oss.api.impl.PresignedUrlApiImpl;
 import com.github.darkjrong.oss.callback.ImageStyleCallBack;
 import com.github.darkjrong.oss.common.enums.CompressedFormatEnum;
 import com.github.darkjrong.oss.common.enums.ZoomModeEnum;
-import cn.darkjrong.oss.common.pojo.dto.*;
 import com.github.darkjrong.oss.common.pojo.vo.ImageInfoVO;
 import com.github.darkjrong.oss.common.utils.StyleUtils;
 import cn.hutool.core.io.FileUtil;

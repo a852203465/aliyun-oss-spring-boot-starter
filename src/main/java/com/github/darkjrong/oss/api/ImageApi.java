@@ -4,7 +4,6 @@ import com.github.darkjrong.oss.callback.ImageStyleCallBack;
 import com.github.darkjrong.oss.common.enums.CompressedFormatEnum;
 import com.github.darkjrong.oss.common.enums.ImageFormatEnum;
 import com.github.darkjrong.oss.common.exception.AliyunOSSClientException;
-import cn.darkjrong.oss.common.pojo.dto.*;
 import com.github.darkjrong.oss.common.pojo.vo.ImageInfoVO;
 import com.github.darkjrong.oss.common.pojo.dto.*;
 
