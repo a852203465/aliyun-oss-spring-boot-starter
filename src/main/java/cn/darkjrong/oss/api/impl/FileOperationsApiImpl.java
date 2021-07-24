@@ -7,6 +7,7 @@ import cn.darkjrong.oss.common.constants.FileConstant;
 import cn.darkjrong.oss.common.enums.ExceptionEnum;
 import cn.darkjrong.oss.common.exception.AliyunOSSClientException;
 import cn.darkjrong.oss.common.pojo.vo.FileInfoVO;
+import cn.darkjrong.oss.common.utils.ExceptionUtils;
 import cn.darkjrong.spring.boot.autoconfigure.AliyunOSSProperties;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.io.FileUtil;
@@ -49,12 +50,7 @@ public class FileOperationsApiImpl extends BaseApiImpl implements FileOperations
         }
 
         String extName = StrUtil.DOT + FileUtil.extName(file);
-        try {
-            return this.uploadFile(bucketName, directory, FileUtil.getInputStream(file), extName, tags);
-        }catch (Exception e) {
-            logger.error("uploadFile {}", e.getMessage());
-            throw new AliyunOSSClientException(e.getMessage());
-        }
+        return this.uploadFile(bucketName, directory, FileUtil.getInputStream(file), extName, tags);
     }
 
     @Override
@@ -99,7 +95,7 @@ public class FileOperationsApiImpl extends BaseApiImpl implements FileOperations
             return fileInfoVO;
         }catch (Exception e) {
             logger.error("uploadFile {}", e.getMessage());
-            throw new AliyunOSSClientException(e.getMessage());
+            throw new AliyunOSSClientException(ExceptionUtils.exception(e));
         }
     }
 
@@ -193,7 +189,7 @@ public class FileOperationsApiImpl extends BaseApiImpl implements FileOperations
             return fileInfoVO;
         }catch (Exception e) {
             logger.error("shardUploadFile {}", e.getMessage());
-            throw new AliyunOSSClientException(e.getMessage());
+            throw new AliyunOSSClientException(ExceptionUtils.exception(e));
         }
 
     }
@@ -201,9 +197,9 @@ public class FileOperationsApiImpl extends BaseApiImpl implements FileOperations
     @Override
     public boolean abortShardUpload(String bucketName, String objectName, String uploadId) {
 
+        AbortMultipartUploadRequest abortMultipartUploadRequest = new AbortMultipartUploadRequest(bucketName, objectName, uploadId);
+
         try {
-            AbortMultipartUploadRequest abortMultipartUploadRequest =
-                    new AbortMultipartUploadRequest(bucketName, objectName, uploadId);
             getOssClient().abortMultipartUpload(abortMultipartUploadRequest);
             return Boolean.TRUE;
         }catch (Exception e) {
@@ -230,8 +226,7 @@ public class FileOperationsApiImpl extends BaseApiImpl implements FileOperations
 
         String objectName = getFileName(directory, file);
         FileProgressListener fileProgressListener = new FileProgressListener(progressCallBack, objectName);
-        PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, objectName, file)
-                .<PutObjectRequest>withProgressListener(fileProgressListener);
+        PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, objectName, file).<PutObjectRequest>withProgressListener(fileProgressListener);
 
         if (ObjectUtil.isNotNull(tags) && CollectionUtil.isNotEmpty(tags) &&tags.size() > 0) {
             ObjectMetadata metadata = new ObjectMetadata();
@@ -250,7 +245,7 @@ public class FileOperationsApiImpl extends BaseApiImpl implements FileOperations
             return fileInfoVO;
         } catch (Exception e) {
             logger.error("uploadFile {}", e.getMessage());
-            throw new AliyunOSSClientException(e.getMessage());
+            throw new AliyunOSSClientException(ExceptionUtils.exception(e));
         }
     }
 
@@ -264,7 +259,7 @@ public class FileOperationsApiImpl extends BaseApiImpl implements FileOperations
             return IoUtil.readBytes(ossObject.getObjectContent());
         }catch (Exception e) {
             logger.error("downloadFile {}", e.getMessage());
-            throw new AliyunOSSClientException(e.getMessage());
+            throw new AliyunOSSClientException(ExceptionUtils.exception(e));
         }finally {
             if (ObjectUtil.isNotNull(ossObject)) {
                 IoUtil.close(ossObject);
@@ -283,7 +278,7 @@ public class FileOperationsApiImpl extends BaseApiImpl implements FileOperations
             return file;
         }catch (Exception e) {
             logger.error("downloadFile {}", e.getMessage());
-            throw new AliyunOSSClientException(e.getMessage());
+            throw new AliyunOSSClientException(ExceptionUtils.exception(e));
         }
     }
 
@@ -294,7 +289,7 @@ public class FileOperationsApiImpl extends BaseApiImpl implements FileOperations
             return desFile;
         }catch (Exception e) {
             logger.error("downloadFile {}", e.getMessage());
-            throw new AliyunOSSClientException(e.getMessage());
+            throw new AliyunOSSClientException(ExceptionUtils.exception(e));
         }
     }
 
@@ -304,8 +299,7 @@ public class FileOperationsApiImpl extends BaseApiImpl implements FileOperations
         try {
 
             FileProgressListener fileProgressListener = new FileProgressListener(progressCallBack, objectName);
-            getOssClient().getObject(new GetObjectRequest(bucketName, objectName).
-                            <GetObjectRequest>withProgressListener(fileProgressListener), localFile);
+            getOssClient().getObject(new GetObjectRequest(bucketName, objectName).<GetObjectRequest>withProgressListener(fileProgressListener), localFile);
             return fileProgressListener.isSucceed();
         }catch (Exception e) {
             logger.error("downloadFile {}", e.getMessage());
@@ -347,7 +341,7 @@ public class FileOperationsApiImpl extends BaseApiImpl implements FileOperations
             return objectAcl.getPermission();
         }catch (Exception e) {
             logger.error("getObjectAcl {}", e.getMessage());
-            throw new AliyunOSSClientException(e.getMessage());
+            throw new AliyunOSSClientException(ExceptionUtils.exception(e));
         }
     }
 
@@ -357,7 +351,7 @@ public class FileOperationsApiImpl extends BaseApiImpl implements FileOperations
             return getOssClient().getObjectMetadata(bucketName, objectName);
         }catch (Exception e) {
             logger.error("getObjectMetadata {}", e.getMessage());
-            throw new AliyunOSSClientException(e.getMessage());
+            throw new AliyunOSSClientException(ExceptionUtils.exception(e));
         }
     }
 
@@ -543,13 +537,7 @@ public class FileOperationsApiImpl extends BaseApiImpl implements FileOperations
             throw new AliyunOSSClientException(ExceptionEnum.FILE_DOES_NOT_EXIST.getValue());
         }
 
-       try {
-           return this.speedLimitUploadFile(bucketName, directory, FileUtil.getInputStream(file), limitSpeed, tags, FileUtil.extName(file));
-       }catch (Exception e) {
-           logger.error("speedLimitUploadFile {}", e.getMessage());
-           throw new AliyunOSSClientException(e.getMessage());
-       }
-
+        return this.speedLimitUploadFile(bucketName, directory, FileUtil.getInputStream(file), limitSpeed, tags, FileUtil.extName(file));
     }
 
     @Override
@@ -576,12 +564,7 @@ public class FileOperationsApiImpl extends BaseApiImpl implements FileOperations
             throw new AliyunOSSClientException(ExceptionEnum.FILE_DOES_NOT_EXIST.getValue());
         }
 
-        try {
-            return this.speedLimitUploadFile(bucketName, directory, FileUtil.getInputStream(file), FileConstant.LIMIT_SPEED, tags, FileUtil.extName(file));
-        }catch (Exception e) {
-            logger.error("speedLimitUploadFile {}", e.getMessage());
-            throw new AliyunOSSClientException(e.getMessage());
-        }
+        return this.speedLimitUploadFile(bucketName, directory, FileUtil.getInputStream(file), FileConstant.LIMIT_SPEED, tags, FileUtil.extName(file));
     }
 
     @Override
@@ -652,7 +635,7 @@ public class FileOperationsApiImpl extends BaseApiImpl implements FileOperations
             return fileInfoVO;
         }catch (Exception e) {
             logger.error("speedLimitUploadFile {}", e.getMessage());
-            throw new AliyunOSSClientException(e.getMessage());
+            throw new AliyunOSSClientException(ExceptionUtils.exception(e));
         }    }
 
     @Override
@@ -715,7 +698,7 @@ public class FileOperationsApiImpl extends BaseApiImpl implements FileOperations
             return IoUtil.readBytes(ossObject.getObjectContent());
         }catch (Exception e) {
             logger.error("speedLimitDownloadFile {}", e.getMessage());
-            throw new AliyunOSSClientException(e.getMessage());
+            throw new AliyunOSSClientException(ExceptionUtils.exception(e));
         }
 
     }

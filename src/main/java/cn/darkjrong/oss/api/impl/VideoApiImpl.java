@@ -1,12 +1,12 @@
 package cn.darkjrong.oss.api.impl;
 
-import cn.darkjrong.oss.api.PresignedUrlApi;
 import cn.darkjrong.oss.api.VideoApi;
 import cn.darkjrong.oss.common.builder.StyleBuilder;
 import cn.darkjrong.oss.common.constants.FileConstant;
 import cn.darkjrong.oss.common.enums.*;
 import cn.darkjrong.oss.common.exception.AliyunOSSClientException;
 import cn.darkjrong.oss.common.pojo.dto.VideoSnapshotDTO;
+import cn.darkjrong.oss.common.utils.ExceptionUtils;
 import cn.hutool.core.io.IoUtil;
 import com.aliyun.oss.model.GetObjectRequest;
 import com.aliyun.oss.model.OSSObject;
@@ -57,7 +57,7 @@ public class VideoApiImpl extends BaseApiImpl implements VideoApi {
             return IoUtil.readBytes(object.getObjectContent());
         } catch (Exception e) {
             logger.error("snapshot {}", e.getMessage());
-            throw new AliyunOSSClientException(e.getMessage());
+            throw new AliyunOSSClientException(ExceptionUtils.exception(e));
         }
     }
 

@@ -36,7 +36,7 @@ public class AliyunOSSProperties {
     private String intranet;
 
     /**
-     * 是否使用内外模式上传
+     * 是否使用内网模式上传
      * 开启：true, 关闭：false
      */
     private Boolean openIntranet = false;

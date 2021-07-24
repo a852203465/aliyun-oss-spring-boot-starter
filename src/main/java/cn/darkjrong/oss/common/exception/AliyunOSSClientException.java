@@ -17,31 +17,12 @@ public class AliyunOSSClientException extends RuntimeException implements Serial
     private static final long serialVersionUID = -1501020198729282518L;
 
     /**
-     *  异常code 码
-     */
-    private Integer code;
-
-    /**
      * 异常详细信息
      */
     private String message;
 
-    public AliyunOSSClientException(Integer code, String message){
-        this.code = code;
-        this.message = message;
-    }
-
     public AliyunOSSClientException(String message){
-        this.code = 4999;
         this.message = message;
     }
-
-    public AliyunOSSClientException(Integer code, String message, Throwable t) {
-        super(message, t);
-        this.code = code;
-        this.message = message;
-    }
-
-
 
 }

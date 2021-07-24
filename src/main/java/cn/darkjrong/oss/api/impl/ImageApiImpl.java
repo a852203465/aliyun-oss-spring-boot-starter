@@ -7,10 +7,10 @@ import cn.darkjrong.oss.common.constants.FileConstant;
 import cn.darkjrong.oss.common.enums.CompressedFormatEnum;
 import cn.darkjrong.oss.common.enums.ImageFormatEnum;
 import cn.darkjrong.oss.common.enums.ImageProcessingEnum;
-import cn.darkjrong.oss.common.enums.ZoomModeEnum;
 import cn.darkjrong.oss.common.exception.AliyunOSSClientException;
 import cn.darkjrong.oss.common.pojo.dto.*;
 import cn.darkjrong.oss.common.pojo.vo.ImageInfoVO;
+import cn.darkjrong.oss.common.utils.ExceptionUtils;
 import cn.darkjrong.oss.common.utils.StyleUtils;
 import cn.hutool.core.io.IoUtil;
 import com.alibaba.fastjson.JSONObject;
@@ -215,7 +215,7 @@ public class ImageApiImpl extends BaseApiImpl implements ImageApi {
             return JSONObject.parseObject(result, ImageInfoVO.class);
         }catch (Exception e) {
             logger.error("info {}", e.getMessage());
-            throw new AliyunOSSClientException(e.getMessage());
+            throw new AliyunOSSClientException(ExceptionUtils.exception(e));
         }
 
     }

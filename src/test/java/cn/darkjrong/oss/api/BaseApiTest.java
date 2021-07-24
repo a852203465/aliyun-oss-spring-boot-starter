@@ -19,8 +19,8 @@ public class BaseApiTest {
         aliyunOSSProperties = new AliyunOSSProperties();
         aliyunOSSProperties.setEndpoint("http://oss-cn-shenzhen.aliyuncs.com");
         aliyunOSSProperties.setOpenIntranet(false);
-        aliyunOSSProperties.setAccessKeyId("21321321");
-        aliyunOSSProperties.setAccessKeySecret("31312321321");
+        aliyunOSSProperties.setAccessKeyId("123131");
+        aliyunOSSProperties.setAccessKeySecret("123213121221");
         AliyunOSSFactoryBean aliyunOSSFactoryBean = new AliyunOSSFactoryBean();
         aliyunOSSFactoryBean.setProperties(aliyunOSSProperties);
         aliyunOSSFactoryBean.afterPropertiesSet();

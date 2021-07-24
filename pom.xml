@@ -17,6 +17,11 @@
         </developer>
     </developers>
 
+    <scm>
+        <url>https://github.com/a852203465</url>
+        <connection>https://github.com/a852203465/aliyun-oss-spring-boot-starter.git</connection>
+    </scm>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -97,7 +102,7 @@
         <dependency>
             <groupId>com.aliyun.oss</groupId>
             <artifactId>aliyun-sdk-oss</artifactId>
-            <version>3.10.2</version>
+            <version>3.13.0</version>
         </dependency>
 
 

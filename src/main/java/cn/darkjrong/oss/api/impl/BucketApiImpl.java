@@ -4,6 +4,7 @@ import cn.darkjrong.oss.api.BucketApi;
 import cn.darkjrong.oss.common.exception.AliyunOSSClientException;
 import cn.darkjrong.oss.common.pojo.dto.BucketPolicyDTO;
 import cn.darkjrong.oss.common.pojo.vo.BucketPolicyVO;
+import cn.darkjrong.oss.common.utils.ExceptionUtils;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.lang.Validator;
@@ -33,29 +34,25 @@ public class BucketApiImpl extends BaseApiImpl implements BucketApi {
     @Override
     public Bucket createBucket(String bucketName) throws AliyunOSSClientException {
 
-        try {
-            return this.createBucket(bucketName, StorageClass.Standard,
-                    DataRedundancyType.ZRS, CannedAccessControlList.Private);
-        }catch (Exception e) {
-            logger.error("createBucket {}", e.getMessage());
-            throw new AliyunOSSClientException(e.getMessage());
-        }
+        return this.createBucket(bucketName, StorageClass.Standard,
+                DataRedundancyType.ZRS, CannedAccessControlList.Private);
     }
 
     @Override
     public Bucket createBucket(String bucketName, StorageClass storageClass,
                                DataRedundancyType dataRedundancyType,
                                CannedAccessControlList cannedAccessControlList) throws AliyunOSSClientException {
-        try {
 
-            CreateBucketRequest createBucketRequest = new CreateBucketRequest(bucketName);
-            createBucketRequest.setStorageClass(storageClass);
-            createBucketRequest.setDataRedundancyType(dataRedundancyType);
-            createBucketRequest.setCannedACL(cannedAccessControlList);
+        CreateBucketRequest createBucketRequest = new CreateBucketRequest(bucketName);
+        createBucketRequest.setStorageClass(storageClass);
+        createBucketRequest.setDataRedundancyType(dataRedundancyType);
+        createBucketRequest.setCannedACL(cannedAccessControlList);
+
+        try {
             return getOssClient().createBucket(createBucketRequest);
         }catch (Exception e) {
             logger.error("createBucket {}", e.getMessage());
-            throw new AliyunOSSClientException(e.getMessage());
+            throw new AliyunOSSClientException(ExceptionUtils.exception(e));
         }
     }
 
@@ -64,7 +61,7 @@ public class BucketApiImpl extends BaseApiImpl implements BucketApi {
 
         try {
 
-            List<Bucket> bucketList = null;
+            List<Bucket> bucketList;
 
             if (!flag) {
                 bucketList = getOssClient().listBuckets();
@@ -76,7 +73,7 @@ public class BucketApiImpl extends BaseApiImpl implements BucketApi {
             return bucketList;
         }catch (Exception e) {
             logger.error("findBuckets {}", e.getMessage());
-            throw new AliyunOSSClientException(e.getMessage());
+            throw new AliyunOSSClientException(ExceptionUtils.exception(e));
         }
     }
 
@@ -96,7 +93,7 @@ public class BucketApiImpl extends BaseApiImpl implements BucketApi {
             return getOssClient().getBucketLocation(bucketName);
         }catch (Exception e) {
             logger.error("getBucketLocation {}", e.getMessage());
-            throw new AliyunOSSClientException(e.getMessage());
+            throw new AliyunOSSClientException(ExceptionUtils.exception(e));
         }
     }
 
@@ -106,7 +103,7 @@ public class BucketApiImpl extends BaseApiImpl implements BucketApi {
             return getOssClient().getBucketInfo(bucketName);
         }catch (Exception e) {
             logger.error("getBucketInfo {}", e.getMessage());
-            throw new AliyunOSSClientException(e.getMessage());
+            throw new AliyunOSSClientException(ExceptionUtils.exception(e));
         }
     }
 
@@ -130,7 +127,7 @@ public class BucketApiImpl extends BaseApiImpl implements BucketApi {
             return getOssClient().getBucketAcl(bucketName);
         }catch (Exception e) {
             logger.error("getBucketAcl {}", e.getMessage());
-            throw new AliyunOSSClientException(e.getMessage());
+            throw new AliyunOSSClientException(ExceptionUtils.exception(e));
         }
     }
 
@@ -150,9 +147,11 @@ public class BucketApiImpl extends BaseApiImpl implements BucketApi {
     @Override
     public boolean setBucketTagging(String bucketName, Map<String, String> tags) {
 
-        try {
-            if (tags == null || CollUtil.isEmpty(tags)) return Boolean.FALSE;
+        if (tags == null || CollUtil.isEmpty(tags)) {
+            return Boolean.FALSE;
+        }
 
+        try {
             getOssClient().setBucketTagging(bucketName, tags);
             return Boolean.TRUE;
         }catch (Exception e) {
@@ -169,23 +168,16 @@ public class BucketApiImpl extends BaseApiImpl implements BucketApi {
             return getOssClient().getBucketTagging(bucketName).getAllTags();
         }catch (Exception e) {
             logger.error("getBucketTagging {}", e.getMessage());
-            throw new AliyunOSSClientException(e.getMessage());
+            throw new AliyunOSSClientException(ExceptionUtils.exception(e));
         }
     }
 
     @Override
     public List<Bucket> getBuckets(String tagKey, String tagValue) throws AliyunOSSClientException {
 
-        try {
-
-            ListBucketsRequest listBucketsRequest = new ListBucketsRequest();
-            listBucketsRequest.setTag(tagKey, tagValue);
-
-            return this.getBuckets(listBucketsRequest);
-        }catch (Exception e) {
-            logger.error("getBucketsByTag {}", e.getMessage());
-            throw new AliyunOSSClientException(e.getMessage());
-        }
+        ListBucketsRequest listBucketsRequest = new ListBucketsRequest();
+        listBucketsRequest.setTag(tagKey, tagValue);
+        return this.getBuckets(listBucketsRequest);
     }
 
     @Override
@@ -195,7 +187,7 @@ public class BucketApiImpl extends BaseApiImpl implements BucketApi {
             return getOssClient().listBuckets(listBucketsRequest).getBucketList();
         }catch (Exception e) {
             logger.error("getBuckets {}", e.getMessage());
-            throw new AliyunOSSClientException(e.getMessage());
+            throw new AliyunOSSClientException(ExceptionUtils.exception(e));
         }
     }
 
@@ -519,15 +511,16 @@ public class BucketApiImpl extends BaseApiImpl implements BucketApi {
             return getOssClient().getBucketRequestPayment(bucketName).getPayer();
         }catch (Exception e) {
             logger.error("getBucketRequestPayment {}", e.getMessage());
-            throw new AliyunOSSClientException(e.getMessage());
+            throw new AliyunOSSClientException(ExceptionUtils.exception(e));
         }
     }
 
     @Override
     public boolean setBucketReferer(String bucketName, List<String> refererList) {
 
+        BucketReferer br = new BucketReferer(Boolean.TRUE, refererList);
+
         try {
-            BucketReferer br = new BucketReferer(Boolean.TRUE, refererList);
             getOssClient().setBucketReferer(bucketName, br);
             return Boolean.TRUE;
         }catch (Exception e) {
@@ -545,7 +538,7 @@ public class BucketApiImpl extends BaseApiImpl implements BucketApi {
             return bucketReferer.getRefererList();
         }catch (Exception e) {
             logger.error("getBucketReferer {}", e.getMessage());
-            throw new AliyunOSSClientException(e.getMessage());
+            throw new AliyunOSSClientException(ExceptionUtils.exception(e));
         }
     }
 
@@ -591,7 +584,7 @@ public class BucketApiImpl extends BaseApiImpl implements BucketApi {
             return getOssClient().getBucketLogging(bucketName);
         }catch (Exception e) {
             logger.error("getBucketLogging {}", e.getMessage());
-            throw new AliyunOSSClientException(e.getMessage());
+            throw new AliyunOSSClientException(ExceptionUtils.exception(e));
         }
     }
 
@@ -637,7 +630,7 @@ public class BucketApiImpl extends BaseApiImpl implements BucketApi {
             return getOssClient().getBucketWebsite(bucketName);
         }catch (Exception e) {
             logger.error("getBucketWebsite {}", e.getMessage());
-            throw new AliyunOSSClientException(e.getMessage());
+            throw new AliyunOSSClientException(ExceptionUtils.exception(e));
         }
     }
 
@@ -679,7 +672,7 @@ public class BucketApiImpl extends BaseApiImpl implements BucketApi {
             return getOssClient().getBucketReplication(bucketName);
         }catch (Exception e) {
             logger.error("getBucketReplication {}", e.getMessage());
-            throw new AliyunOSSClientException(e.getMessage());
+            throw new AliyunOSSClientException(ExceptionUtils.exception(e));
         }
     }
 
@@ -689,7 +682,7 @@ public class BucketApiImpl extends BaseApiImpl implements BucketApi {
             return getOssClient().getBucketReplicationProgress(bucketName, replicationRuleId);
         }catch (Exception e) {
             logger.error("getBucketReplicationProgress {}", e.getMessage());
-            throw new AliyunOSSClientException(e.getMessage());
+            throw new AliyunOSSClientException(ExceptionUtils.exception(e));
         }
     }
 
@@ -750,7 +743,7 @@ public class BucketApiImpl extends BaseApiImpl implements BucketApi {
             return getOssClient().getBucketCORSRules(bucketName);
         }catch (Exception e) {
             logger.error("getBucketCORSRules {}", e.getMessage());
-            throw new AliyunOSSClientException(e.getMessage());
+            throw new AliyunOSSClientException(ExceptionUtils.exception(e));
         }
     }
 

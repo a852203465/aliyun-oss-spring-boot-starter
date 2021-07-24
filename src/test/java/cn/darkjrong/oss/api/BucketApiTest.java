@@ -28,7 +28,7 @@ public class BucketApiTest extends BaseApiTest {
     @Test
     public void createBucket() {
 
-        Bucket bucket = bucketApi.createBucket("mrj123456mrj");
+        Bucket bucket = bucketApi.createBucket("mrj123421156mrj");
 
         System.out.println(bucket.toString());
     }

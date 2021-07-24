@@ -4,7 +4,7 @@
 
 ## 版本说明
 
-1. 升级aliyun-sdk-oss 版本为：3.10.2
+1. 升级aliyun-sdk-oss 版本为：3.13.0
 2. 对OSS SDK 功能完整封装
 3. 修改starter 启动方式
 
