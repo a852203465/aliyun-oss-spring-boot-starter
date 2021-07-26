@@ -18,7 +18,7 @@
 
 ```xml
 <dependency>
-    <groupId>com.github.darkjrong</groupId>
+    <groupId>cn.darkjrong</groupId>
     <artifactId>aliyun-oss-spring-boot-starter</artifactId>
     <version>2.0</version>
 </dependency>
