@@ -4,13 +4,13 @@ import cn.darkjrong.oss.api.impl.BucketApiImpl;
 import cn.darkjrong.oss.api.impl.FileOperationsApiImpl;
 import cn.darkjrong.oss.api.impl.PresignedUrlApiImpl;
 import cn.darkjrong.oss.callback.ProgressCallBack;
-import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.map.MapUtil;
 import com.aliyun.oss.model.CannedAccessControlList;
 import com.aliyun.oss.model.ObjectMetadata;
 import com.aliyun.oss.model.ObjectPermission;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -43,7 +43,7 @@ public class FileOperationsApiTest extends BaseApiTest {
     public void uploadFile() {
 
         System.out.println(fileOperationsApi.uploadFile("mrj123456mrj",
-                DateUtil.today(), new File("F:\\我的图片\\美女\\1.jpg"), CollectionUtil.newHashMap()));
+                DateUtil.today(), new File("F:\\我的图片\\美女\\1.jpg"), MapUtil.newHashMap()));
 
     }
 

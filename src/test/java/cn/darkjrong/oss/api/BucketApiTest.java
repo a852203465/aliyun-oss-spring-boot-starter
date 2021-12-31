@@ -1,11 +1,11 @@
 package cn.darkjrong.oss.api;
 
 import cn.darkjrong.oss.api.impl.BucketApiImpl;
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.map.MapUtil;
 import com.alibaba.fastjson.JSON;
 import com.aliyun.oss.model.*;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +73,7 @@ public class BucketApiTest extends BaseApiTest {
     @Test
     public void setBucketTagging() {
 
-        Map<String, String> tags = CollUtil.newHashMap();
+        Map<String, String> tags = MapUtil.newHashMap();
         tags.put("tag1", "tag1");
         tags.put("tag2", "tag2");
 

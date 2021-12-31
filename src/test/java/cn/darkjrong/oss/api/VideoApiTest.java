@@ -4,7 +4,7 @@ import cn.darkjrong.oss.api.impl.PresignedUrlApiImpl;
 import cn.darkjrong.oss.api.impl.VideoApiImpl;
 import cn.darkjrong.oss.common.enums.ImageFormatEnum;
 import cn.darkjrong.oss.common.pojo.dto.VideoSnapshotDTO;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  *

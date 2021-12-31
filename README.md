@@ -4,7 +4,7 @@
 
 ## 版本说明
 
-1. 升级aliyun-sdk-oss 版本为：3.13.0
+1. 升级aliyun-sdk-oss 版本为：3.13.2
 2. 对OSS SDK 功能完整封装
 3. 修改starter 启动方式
 
@@ -27,7 +27,7 @@
 3. 配置参数(application.properties)  yml配置
 
 ```yaml
-  aliyun-oss:
+aliyun-oss:
   # 外网域名
   endpoint: http://oss-cn-shenzhen.aliyuncs.com
   # ak
