@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
- * 海康 云眸 配置类
+ * 阿里云OSS 配置类
  *
  * @author Rong.Jia
  * @date 2021/01/28 16:18:22
